@@ -10,7 +10,7 @@
 .u-section-1 .u-shape-1 {
   height: 333px;
   width: 716px;
-  background-image: linear-gradient(#fde8ee, #b2c8f3);
+  background-image: linear-gradient(#f8e8fe, #abc5f6);
   margin: 204px auto 0;
 }
 
@@ -108,7 +108,7 @@
     font-size: 1.875rem;
   }
 } .u-section-2 {
-  background-image: linear-gradient(#fde8ee, #b2c8f3);
+  background-image: linear-gradient(#f8e8fe, #abc5f6);
 }
 
 .u-section-2 .u-sheet-1 {
@@ -552,7 +552,7 @@
   height: 596px;
   margin-top: 70px;
   margin-bottom: 0;
-  background-image: linear-gradient(#fde8ee, #b2c8f3);
+  background-image: linear-gradient(#f8e8fe, #abc5f6);
 }
 
 .u-section-3 .u-text-1 {
@@ -582,7 +582,6 @@
 }
 
 .u-section-3 .u-text-2 {
-  font-size: 1.25rem;
   margin: 0 auto 0 0;
 }
 
@@ -616,7 +615,6 @@
 }
 
 .u-section-3 .u-text-5 {
-  font-size: 1.25rem;
   margin: 0 auto 0 0;
 }
 
@@ -649,7 +647,6 @@
 }
 
 .u-section-3 .u-text-8 {
-  font-size: 1.25rem;
   margin: 0 auto 0 0;
 }
 
@@ -684,6 +681,18 @@
 
   .u-section-3 .u-repeater-1 {
     min-height: 535px;
+  }
+
+  .u-section-3 .u-text-2 {
+    font-size: 1.25rem;
+  }
+
+  .u-section-3 .u-text-5 {
+    font-size: 1.25rem;
+  }
+
+  .u-section-3 .u-text-8 {
+    font-size: 1.25rem;
   }
 }
 
@@ -831,7 +840,7 @@
 
 .u-section-4 .u-layout-cell-3 {
   min-height: 586px;
-  background-image: linear-gradient(#fde8ee, #b2c8f3);
+  background-image: linear-gradient(#f8e8fe, #abc5f6);
 }
 
 .u-section-4 .u-container-layout-3 {
@@ -915,7 +924,7 @@
 
 .u-section-5 .u-shape-1 {
   height: 581px;
-  background-image: linear-gradient(#fde8ee, #b2c8f3);
+  background-image: linear-gradient(#f8e8fe, #abc5f6);
   margin-top: 0;
   margin-bottom: 0;
 }
@@ -1410,7 +1419,7 @@
 
 .u-section-6 .u-layout-cell-3 {
   min-height: 466px;
-  background-image: linear-gradient(#f5a6bf, #b2c8f3);
+  background-image: linear-gradient(#e5a3fb, #abc5f6);
 }
 
 .u-section-6 .u-container-layout-3 {
@@ -1672,7 +1681,7 @@
 
 .u-section-7 .u-shape-1 {
   height: 477px;
-  background-image: linear-gradient(#fde8ee, #b2c8f3);
+  background-image: linear-gradient(#f8e8fe, #abc5f6);
   margin-top: 0;
   margin-bottom: 0;
 }
