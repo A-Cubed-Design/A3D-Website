@@ -6,7 +6,7 @@
   <img src="./assets/enigma.png" alt="">
   <div class="enigma-text">
     <p class="title">Enigma Reader</p>
-    <div class="sub-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Necessitatibus, nostrum? Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint asperiores est aliquid veniam eos! Eligendi repellendus in doloribus perferendis dolorem.</div>
+    <div class="sub-text">The enigma reader is a super cool device that is going to cHaNgE the way BlinD peOpLe rEaD bRaiLle</div>
   </div>
 </div>
 
