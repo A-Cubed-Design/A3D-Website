@@ -13,7 +13,7 @@
 
   let orderIds = [];
 
-  // save orderIds to local storage
+  // save orderIds to local storage so there isn't a loading delay
   const saveOrderIds = () => {
     localStorage.setItem("orderIds", JSON.stringify(orderIds));
   };
@@ -37,6 +37,8 @@
       "6358796a8d7934bcb3cf",
       "63587d34102e1c615923"
     );
+
+    orderIds = [];
     // this is probably not good
     let allDocs = response.documents;
     allDocs.forEach((quote) => {

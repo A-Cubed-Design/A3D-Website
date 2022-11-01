@@ -3,60 +3,24 @@ import { writable } from "svelte/store";
 // persist an array of objects to localStorage
 export const quoteStore = writable(
   JSON.parse(localStorage.getItem("quoteStore")) || [
-    {
-      title: 'Tab 1',
-      $id: 1,
+    // {
+    //   title: 'Tab 1',
+    //   $id: 1,
   
-      type: null,
-      material: '',
+    //   type: null,
+    //   material: '',
   
-      quantity: 0,
-      height: 0,
-      width: 0,
-      depth: 0,
+    //   quantity: 0,
+    //   height: 0,
+    //   width: 0,
+    //   depth: 0,
   
-      description: '',
-      requirements: '',
-      url: '',
-      address: '',
-      status: '',
-    },
-    {
-      title: 'Tab 2',
-      $id: 2,
-  
-      type: null,
-      material: '',
-  
-      quantity: 0,
-      height: 0,
-      width: 0,
-      depth: 0,
-  
-      description: '',
-      requirements: '',
-      url: '',
-      address: '',
-      status: '',
-    },
-    {
-      title: 'Tab 3',
-      $id: 3,
-  
-      type: null,
-      material: '',
-  
-      quantity: 0,
-      height: 0,
-      width: 0,
-      depth: 0,
-  
-      description: '',
-      requirements: '',
-      url: '',
-      address: '',
-      status: '',
-    },
+    //   description: '',
+    //   requirements: '',
+    //   url: '',
+    //   address: '',
+    //   status: '',
+    // },
   ]
 );
 
