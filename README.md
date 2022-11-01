@@ -1,2 +1,3 @@
-# A3D-Website
-A3D Design Website
+# Svelte + Vite
+
+Homepage design made using svelte.
