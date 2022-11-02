@@ -38,6 +38,7 @@
       "63587d34102e1c615923"
     );
 
+    // clearing might not be needed if I use stores
     orderIds = [];
     // this is probably not good
     let allDocs = response.documents;

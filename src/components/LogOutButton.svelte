@@ -1,6 +1,6 @@
 <script>
   import { Account, Client } from "appwrite";
-  import { loggedInStore } from "../stores.js";
+  import { loggedInStore, emailStore } from "../stores.js";
 
   const client = new Client()
     .setEndpoint("https://api.acubed.design/v1")
@@ -15,6 +15,7 @@
     promise.then((response) => {
       console.log(response, "logged out");
       $loggedInStore = false;
+      $emailStore = '';
       email = '';
     }, (error) => {
       console.log(error);
@@ -22,20 +23,19 @@
   }
 
 
-  const showEmail = () => {
-    const promise = account.get();
+  // const showEmail = () => {
+  //   const promise = account.get();
 
-    promise.then((response) => {
-      console.log(response, "user email");
-      email = response.email
-    }, (error) => {
-      console.log(error, "this error only means you're logged out");
-    });
-  }
+  //   promise.then((response) => {
+  //     console.log(response, "user email");
+  //     email = response.email
+  //   }, (error) => {
+  //     console.log(error, "this error only means you're logged out");
+  //   });
+  // }
 
-  showEmail(); // there has to be a better place for this
+  // showEmail(); // there has to be a better place for this
 </script>
-<p class="email">devinfo: {email}</p>
 
 {#if $loggedInStore}
   <button on:click={logOutHandler}>Log Out</button>

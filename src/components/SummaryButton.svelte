@@ -21,7 +21,7 @@
 </script>
 
 <button disabled={myBool} on:click={handleSummaryClick}>
-  Submit/Checkout
+  Checkout
 </button>
 
 <style>

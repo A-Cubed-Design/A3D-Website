@@ -41,6 +41,9 @@ currentIdStore.subscribe((value) => {localStorage.setItem("currentIdStore", JSON
 export const loggedInStore = writable(JSON.parse(localStorage.getItem("loggedInStore")) || false)
 loggedInStore.subscribe((value) => {localStorage.setItem("loggedInStore", JSON.stringify(value))})
 
+export const emailStore = writable(JSON.parse(localStorage.getItem("emailStore")) || '')
+emailStore.subscribe((value) => {localStorage.setItem("emailStore", JSON.stringify(value))})
+
 // export const quoteStore = writable([
 //   {
 //     title: 'Tab 1',

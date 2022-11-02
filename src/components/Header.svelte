@@ -9,7 +9,7 @@
 
 <header>
   <img src="./assets/ACubedLogo.png" alt="A Cubed Design Logo">
-  <h1>Tabbed Calc</h1>
+  <h1>Quoting Tool</h1>
   <div class="accent-block" aria-hidden="true"></div>
   <div class="accent-block-2" aria-hidden="true"></div>
   
@@ -22,6 +22,8 @@
 </header>
 
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
   header {
     background-color: hsl(282 98% 29%); 
     width: 100vw;
@@ -31,6 +33,7 @@
     position: relative;
 
     overflow: hidden;
+    font-family: poppins, sans-serif;
   }
 
   header {

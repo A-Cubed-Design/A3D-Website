@@ -2,31 +2,36 @@
   import Header from "./components/Header.svelte";
   import Nav from "./components/Nav.svelte";
   import TabBody from "./components/TabBody.svelte";
+  import Admin from "./components/Admin.svelte";
+  import Login from "./components/Login.svelte";
   import Footer from "./components/Footer.svelte";
 
-  import Login from "./components/Login.svelte";
+  import { loggedInStore, emailStore } from "./stores.js";
 
-  import { loggedInStore } from "./stores.js";
-
-
-  // let loggedIn = false;
-
-  // const handleMessage = (event) => {
-  //   console.log(event.detail, "event detail");
-  //   loggedIn = true;
-  // }
+  const testHandler = () => {
+    console.log($emailStore);
+  }
 </script>
 
 <main>
   <Header/>
 
-  
-  {#if $loggedInStore}
+  {#if $loggedInStore && $emailStore === 'testing@email.com'}
+    <Admin />
+  {:else if $loggedInStore}
+    <Nav/>
+    <TabBody/>
+  {:else}
+    <Login/>
+  {/if}
+
+    <!-- {#if $loggedInStore}
     <Nav/>
     <TabBody/>
   {:else }
-    <Login />
-  {/if}
+    <Login/>
+  {/if} -->
+
 
   <Footer/>
 </main>

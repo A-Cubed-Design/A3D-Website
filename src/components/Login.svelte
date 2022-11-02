@@ -1,7 +1,7 @@
 <script>
   import { Account, Client, ID, Databases } from "appwrite";
   import { loggedInStore, quoteStore } from "../stores.js";
-  import { activeStore } from "../stores.js";
+  import { activeStore, emailStore } from "../stores.js";
   let newUser = false;
 
   let newUsername = '';
@@ -42,6 +42,7 @@
       password = '';
       confirmPassword = '';
       $activeStore = -1; // force new logins to go to -1 (summary), I'll change this later
+      $emailStore = response.providerUid;
       // refreshDocs();
     }, (error) => {
       console.log(error);
@@ -78,6 +79,8 @@
   // }
 
   checkIfauthenticated();
+
+
 </script>
 
 
