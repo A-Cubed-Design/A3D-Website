@@ -16,7 +16,7 @@
 <main>
   <Header/>
 
-  {#if $loggedInStore && $emailStore === 'testing@email.com'}
+  {#if $loggedInStore && $emailStore === 'admin@email.com'}
     <Admin />
   {:else if $loggedInStore}
     <Nav/>

@@ -1,7 +1,7 @@
 <script>
   import SummaryButton from "./SummaryButton.svelte";
   import LogOutButton from "./LogOutButton.svelte";
-  import { loggedInStore } from "../stores.js";
+  import { loggedInStore, emailStore } from "../stores.js";
   import OrdersButton from "./OrdersButton.svelte";
 
 
@@ -14,7 +14,9 @@
   <div class="accent-block-2" aria-hidden="true"></div>
   
   <LogOutButton />
-  {#if $loggedInStore}
+  {#if $emailStore === "admin@email.com"}
+  <p>.</p>
+  {:else}
     <SummaryButton />
     <OrdersButton />
   {/if}
