@@ -2,6 +2,7 @@
   import { createEventDispatcher } from 'svelte';
   import { Account, Client, Databases, Query } from 'appwrite';
   import AdminInput from './AdminInput.svelte';
+  import Status from './Status.svelte';
   
   const client = new Client()
     .setEndpoint('https://api.acubed.design/v1')
@@ -90,7 +91,7 @@
 <div class="detailed-view">
 {#if !modelView}
   <!-- <button on:click={checkIfCompleted}>check who is finished</button> -->
-    <p>Order 
+    <p class="title">Order 
       {(myArr[0].orderId.slice(-6).toUpperCase())}
     </p>
     <button on:click={toggleDetailedView} class="back">back</button>
@@ -99,6 +100,7 @@
     <div class="quote">
       <p class="model-title">{quote.title}</p>
       <button data-id={quote.$id} on:click={fetchModelData}>click me to edit</button>
+      <Status currentModel={quote} currentId={quote.$id}/>
       {#if completedIds.includes(quote.$id)}
         <div class="check">✓</div>
       {/if}
@@ -117,6 +119,9 @@
         length: {currentModel.depth}mm
       {/if}
     </div>
+
+    <!-- I really shouldn't have to pass in 2 objects -->
+    <Status {currentModel} currentId={currentModel.$id}/>
     
     <p>Email: {currentModel.email}</p>
     <p>Order ID: {currentModel.orderId}</p>
@@ -172,15 +177,17 @@
     margin-bottom: 6px;
   }
 
-  img {
-    width: 20px;
-    height: 20px;
-  }
-
   button {
     padding: 5px;
     border: none;
     margin: 3px;
+    font-size: 18px;
+  }
+
+  .model-title {
+    font-size: 20px;
+    padding: 3px;
+    min-width: 120px;
   }
 
   .check {

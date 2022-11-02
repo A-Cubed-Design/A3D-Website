@@ -3,6 +3,7 @@
   import { onMount } from "svelte";
 
   import Detailed from "./Detailed.svelte";
+  import Status from "./Status.svelte";
  
   let newUser = false;
   $: loggedIn = true;
