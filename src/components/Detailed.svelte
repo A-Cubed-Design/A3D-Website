@@ -3,6 +3,7 @@
   import { Account, Client, Databases, Query } from 'appwrite';
   import AdminInput from './AdminInput.svelte';
   import Status from './Status.svelte';
+  import { writable } from 'svelte/store';
   
   const client = new Client()
     .setEndpoint('https://api.acubed.design/v1')
@@ -85,22 +86,40 @@
 
   checkIfCompleted();
 
+
+
+const testArr = writable(myArr);
+console.log($testArr, "testArr");
+
+
+
+
+
+const changeAllStatus = () => {
+  myArr.forEach((model) => {
+    model.status = "shipped";
+  })
+
+  myArr = [...myArr];
+}
+
 </script>
 
 
 <div class="detailed-view">
 {#if !modelView}
   <!-- <button on:click={checkIfCompleted}>check who is finished</button> -->
-    <p class="title">Order 
-      {(myArr[0].orderId.slice(-6).toUpperCase())}
-    </p>
-    <button on:click={toggleDetailedView} class="back">back</button>
-    <button on:click={() => console.log(myArr)}>console</button>
+  <p class="title">Order 
+    {(myArr[0].orderId.slice(-6).toUpperCase())}
+  </p>
+  <button on:click={toggleDetailedView} class="back">back</button>
+  <button on:click={() => console.log(myArr)}>console</button>
+  <button on:click={changeAllStatus}>clear all status</button>
     {#each myArr as quote}
     <div class="quote">
       <p class="model-title">{quote.title}</p>
       <button data-id={quote.$id} on:click={fetchModelData}>click me to edit</button>
-      <Status currentModel={quote} currentId={quote.$id}/>
+      <Status {testArr} currentModel={quote} currentId={quote.$id}/>
       {#if completedIds.includes(quote.$id)}
         <div class="check">✓</div>
       {/if}
@@ -120,8 +139,8 @@
       {/if}
     </div>
 
-    <!-- I really shouldn't have to pass in 2 objects -->
-    <Status {currentModel} currentId={currentModel.$id}/>
+    <!-- I really shouldn't have to pass in this many things -->
+    <Status {currentModel} currentId={currentModel.$id} {testArr}/>
     
     <p>Email: {currentModel.email}</p>
     <p>Order ID: {currentModel.orderId}</p>

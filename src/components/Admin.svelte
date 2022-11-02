@@ -98,6 +98,7 @@
   const toggleDetailedView = () => {
     detailedView = !detailedView;
   };
+
   
 </script>
 

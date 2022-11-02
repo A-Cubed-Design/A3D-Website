@@ -1,8 +1,9 @@
 <script>
   import { Account, Client, ID, Databases } from "appwrite";
+  
   export let currentModel
   export let currentId;
-  // const menuStatus;
+  export let testArr;
 
   const client = new Client()
     .setEndpoint("https://api.acubed.design/v1")
@@ -38,6 +39,10 @@
   }
 
 
+  function logTestArr() {
+    console.log($testArr);
+    currentModel.status = "shipped";
+  }
 </script>
 
 <select bind:value={currentModel.status} name="status" id="status">status
@@ -52,6 +57,7 @@
 </select>
 
 <button on:click={statusHandler}>update status</button>
+<button on:click={logTestArr}>reset all to same</button>
 
 <style>
   select {
