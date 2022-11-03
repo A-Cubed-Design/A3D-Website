@@ -4,6 +4,7 @@
   import AdminInput from './AdminInput.svelte';
   import Status from './Status.svelte';
   import { writable } from 'svelte/store';
+  import { onMount } from 'svelte';
   
   const client = new Client()
     .setEndpoint('https://api.acubed.design/v1')
@@ -95,13 +96,17 @@ console.log($testArr, "testArr");
 
 
 
-const changeAllStatus = () => {
-  myArr.forEach((model) => {
-    model.status = "shipped";
-  })
+  const changeAllStatus = (status) => {
+    myArr.forEach((model) => {
+      model.status = status;
+    })
+    myArr = [...myArr];
+  }
 
-  myArr = [...myArr];
-}
+  
+  let allStatusSelector;
+  
+
 
 </script>
 
@@ -114,7 +119,19 @@ const changeAllStatus = () => {
   </p>
   <button on:click={toggleDetailedView} class="back">back</button>
   <button on:click={() => console.log(myArr)}>console</button>
-  <button on:click={changeAllStatus}>clear all status</button>
+  
+  <select bind:this={allStatusSelector} name="status" id="status">status
+    <option value="">-Select status-</option>
+    <option value="order placed">Order placed</option>
+    <option value="quote in progress">Quote in Progress</option>
+    <option value="quote sent">Quote sent</option>
+    <option value="quote approved">Quote approved</option>
+    <option value="in printing">In printing</option>
+    <option value="awaiting payment">Awaiting Payment</option>
+    <option value="shipped">Shipped</option>
+  </select>
+  <button on:click={() => {changeAllStatus(allStatusSelector.value)}}>change all status</button>
+  
     {#each myArr as quote}
     <div class="quote">
       <p class="model-title">{quote.title}</p>
@@ -148,6 +165,8 @@ const changeAllStatus = () => {
     
     <p>Requirements: {currentModel.requirements}</p>
     <p>Description: {currentModel.description}</p>
+
+    <p>URL: <a target="_blank" href={currentModel.url}>Thingiverse Link</a></p>
     
     <AdminInput modelId={currentModel.$id}/>
   {/if}

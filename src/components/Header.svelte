@@ -16,7 +16,7 @@
   <LogOutButton />
   {#if $emailStore === "admin@email.com"}
   <p>.</p>
-  {:else}
+  {:else if $loggedInStore}
     <SummaryButton />
     <OrdersButton />
   {/if}
@@ -36,6 +36,7 @@
 
     overflow: hidden;
     font-family: poppins, sans-serif;
+    box-shadow: 0 10px 12px -10px #0008;
   }
 
   header {
@@ -44,7 +45,7 @@
 
   img {
     height: 160%;
-    padding: 0 10px;
+    padding: 0 12px;
   }
 
   .accent-block {

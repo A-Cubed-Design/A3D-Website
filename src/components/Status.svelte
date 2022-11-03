@@ -39,10 +39,6 @@
   }
 
 
-  function logTestArr() {
-    console.log($testArr);
-    currentModel.status = "shipped";
-  }
 </script>
 
 <select bind:value={currentModel.status} name="status" id="status">status
@@ -52,12 +48,12 @@
   <option value="quote sent">Quote sent</option>
   <option value="quote approved">Quote approved</option>
   <option value="in printing">In printing</option>
+  <option value="awaiting payment">Awaiting Payment</option>
   <!-- do we need to break this into 2 states (shipping/shipped)? -->
   <option value="shipped">Shipped</option>
 </select>
 
 <button on:click={statusHandler}>update status</button>
-<button on:click={logTestArr}>reset all to same</button>
 
 <style>
   select {

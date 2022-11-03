@@ -50,7 +50,7 @@
 <style>
   nav {
     height: 56px;
-    box-shadow: inset  0 10px 12px -10px #0008;
+    
     background-color: var(--my-dark-gray);
 
     display: flex;

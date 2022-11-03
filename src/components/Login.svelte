@@ -41,11 +41,20 @@
       username = '';
       password = '';
       confirmPassword = '';
-      $activeStore = -1; // force new logins to go to -1 (summary), I'll change this later
       $emailStore = response.providerUid;
-      // refreshDocs();
+      
+      // if there are local quotes, show them
+      if ($quoteStore.length) {
+        $activeStore = $quoteStore[0].$id;
+      } else {
+        console.log('quoteStore has no length');
+        $activeStore = -2; // if no local quotes, show past orders on login
+      }
+
+
     }, (error) => {
       console.log(error);
+      alert('Invalid username or password.')
     });
   }
 
@@ -72,14 +81,17 @@
 
   }
 
-  // there has to be a simpler way to do this
-  // const dispatch = createEventDispatcher();
-  // const dispatchLogin = () => {
-  //   dispatch('message', 'login msg custom');
-  // }
-
   checkIfauthenticated();
 
+  const enterHandler = (e) => {
+    if (newUser) {
+      if (e.key === 'Enter') {
+        createNewUser();
+      }
+    } else if (e.key === 'Enter') {
+      login();
+    }
+  }
 
 </script>
 
@@ -121,10 +133,12 @@
       <p>Already have an account?</p>
       <button on:click={() => newUser = false}>Log in</button>
     </div>
-
-  {/if}
-
-</div>
+    
+    {/if}
+    
+  </div>
+  
+  <svelte:window on:keydown={enterHandler} />
 
 <style>
   .login-container {
