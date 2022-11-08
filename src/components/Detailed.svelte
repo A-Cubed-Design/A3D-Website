@@ -95,7 +95,7 @@ console.log($testArr, "testArr");
 
 
 
-
+ 
   const changeAllStatus = (status) => {
     myArr.forEach((model) => {
       model.status = status;
@@ -106,6 +106,21 @@ console.log($testArr, "testArr");
   
   let allStatusSelector;
   
+   // can this even be abstracted to Status.svelte?
+  const submitAllStatus = () => {
+    myArr.forEach((model) => {
+      model.status = allStatusSelector.value;
+
+      // let promise = databases.updateDocument(
+      //   "6358796a8d7934bcb3cf",
+      //   "63587d34102e1c615923",
+      //   model.$id,
+      //   model
+      // )
+    })
+
+    console.log(myArr, "myarr deet");
+}
 
 
 </script>
@@ -131,6 +146,7 @@ console.log($testArr, "testArr");
     <option value="shipped">Shipped</option>
   </select>
   <button on:click={() => {changeAllStatus(allStatusSelector.value)}}>change all status</button>
+  <button on:click={() => {submitAllStatus(allStatusSelector.value)}}>submit all status</button>
   
     {#each myArr as quote}
     <div class="quote">
@@ -184,6 +200,7 @@ console.log($testArr, "testArr");
     border-radius: 12px;
     margin: 12px auto;
     padding: 12px;
+    position: relative;
   }
   
   .quote {
@@ -206,7 +223,9 @@ console.log($testArr, "testArr");
     margin: 4px;
     font-size: 1.2em;
     position: absolute;
-    right: 70px;
+    right: 50px;
+    top: 30px;
+    border-radius: 4px;
   }
 
   .title {

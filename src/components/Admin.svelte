@@ -105,20 +105,20 @@
 
 <main>
 
-<h2>All Orders: </h2>
-
-
+  
+  
   {#if !detailedView}
+  <h2>Pending Orders: </h2>
     {#each filteredOrders as order}
       <div class="order-id">
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <p id={order.orderId} on:click={clickOrderHandler}>{sliceOrderId(order.orderId)} email: {order.email}</p>
       </div>
     {/each}
+    <h2>Completed Orders: </h2>
   {:else}
     <Detailed myArr={currentOrder} on:toggleDetailedView={toggleDetailedView} />
   {/if}
-
 
 
 </main>
@@ -134,5 +134,9 @@
 
   * {
     text-align: left;
+  }
+
+  h2 {
+    margin: 8px;
   }
 </style>

@@ -16,7 +16,7 @@
 <main>
   <Header/>
 
-  {#if $loggedInStore && $emailStore === 'admin@email.com'}
+  {#if $loggedInStore && $emailStore === 'admin@email.com' || $loggedInStore && $emailStore === 'garrett@acubed.design'}
     <Admin />
   {:else if $loggedInStore}
     <Nav/>
