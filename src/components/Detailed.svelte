@@ -105,21 +105,40 @@ console.log($testArr, "testArr");
 
   
   let allStatusSelector;
-  
-   // can this even be abstracted to Status.svelte?
-  const submitAllStatus = () => {
-    myArr.forEach((model) => {
-      model.status = allStatusSelector.value;
 
-      // let promise = databases.updateDocument(
-      //   "6358796a8d7934bcb3cf",
-      //   "63587d34102e1c615923",
-      //   model.$id,
-      //   model
-      // )
+
+  let processed = false;
+   // can this even be abstracted to tatus.svelte?
+  const submitAllStatus = (status) => {
+
+
+    myArr.forEach((model) => {
+      let tempModel = model;
+      tempModel.status = status;
+      tempModel.$id = model.$id;
+      delete tempModel.$collectionId;
+      delete tempModel.$databaseId;
+
+
+      let promise = databases.updateDocument(
+        "6358796a8d7934bcb3cf",
+        "63587d34102e1c615923",
+        model.$id,
+        model
+      )
+
+      promise.then((response) => {
+        processed = true;
+        // doing this so I can log outside of the forEach loop IF it's all done
+      }, (error) => {
+        console.log(error);
+      });
     })
 
-    console.log(myArr, "myarr deet");
+    if (processed) {
+      alert('all status has been updated in DB');
+    }
+
 }
 
 
@@ -195,7 +214,7 @@ console.log($testArr, "testArr");
 <style>
   .detailed-view {
     background-color: #333;
-    width: 90vw;
+    max-width: 80vw;
     min-height: 70vh;
     border-radius: 12px;
     margin: 12px auto;

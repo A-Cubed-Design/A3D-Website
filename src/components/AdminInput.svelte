@@ -174,8 +174,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 800px;
+    max-width: 800px;
     margin: 0 auto;
+    
 
   }
 
