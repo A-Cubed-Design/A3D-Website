@@ -14,6 +14,12 @@
   const databases = new Databases(client);
 
   const createNewUser = () => {
+    if (validateEmail(newUsername) === false) {
+      // should I do this or just let the appwrite error handle it?
+      alert('Invalid email');
+      return;
+    }
+
     const promise = account.create(ID.unique(), newUsername, newPassword);
 
     promise.then((response) => {
@@ -25,6 +31,7 @@
       
     }, (error) => {
       console.log(error);
+      // alert('Invalid email or password.');
     });
   }
 
@@ -33,6 +40,7 @@
   let confirmPassword
 
   const login = () => {
+
     const promise = account.createEmailSession(username, password);
 
     promise.then((response) => {
@@ -93,6 +101,14 @@
     }
   }
 
+  const validateEmail = (email) => {
+    const re = /\S+@\S+\.\S+/;
+    return re.test(email);
+    alert('test');
+  }
+
+
+  $: isValidEmail = validateEmail(newUsername);
 </script>
 
 
@@ -126,7 +142,7 @@
 
     <div class="new-user-container">
       <h1>Sign up</h1>
-      <input type="text" id="username" name="username" placeholder="Username" bind:value={newUsername} />
+      <input type="email" id="username" name="username" placeholder="email" bind:value={newUsername} required />
       <input type="password" id="password" name="password" placeholder="Password" bind:value={newPassword}/>
       <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm password" bind:value={confirmPassword}/>
       <button type="submit" on:click={createNewUser}>Sign up</button>

@@ -109,12 +109,12 @@ console.log($testArr, "testArr");
 
   let processed = false;
    // can this even be abstracted to tatus.svelte?
-  const submitAllStatus = (status) => {
+  const submitAllStatus = () => {
 
 
     myArr.forEach((model) => {
       let tempModel = model;
-      tempModel.status = status;
+      
       tempModel.$id = model.$id;
       delete tempModel.$collectionId;
       delete tempModel.$databaseId;
@@ -124,7 +124,7 @@ console.log($testArr, "testArr");
         "6358796a8d7934bcb3cf",
         "63587d34102e1c615923",
         model.$id,
-        model
+        tempModel
       )
 
       promise.then((response) => {
@@ -165,7 +165,7 @@ console.log($testArr, "testArr");
     <option value="shipped">Shipped</option>
   </select>
   <button on:click={() => {changeAllStatus(allStatusSelector.value)}}>change all status</button>
-  <button on:click={() => {submitAllStatus(allStatusSelector.value)}}>submit all status</button>
+  <button on:click={submitAllStatus}>submit all status</button>
   
     {#each myArr as quote}
     <div class="quote">
