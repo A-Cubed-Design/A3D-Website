@@ -1,6 +1,6 @@
 <script>
   import { Account, Client, Databases, ID, Query } from "appwrite";
-  import { loggedInStore, quoteStore } from "../stores";
+  import { loggedInStore, quoteStore, emailStore } from "../stores";
   import { activeStore } from "../stores";
   import { onMount } from "svelte";
   import NoTab from "./NoTab.svelte";
@@ -114,9 +114,10 @@
 </script>
 
 <!-- this flashes in for a second because orderIds doesn't have a length until queried -->
+<h1 id="view-title">Orders:</h1>
+<h2>{$emailStore}</h2>
 {#if (orderIds.length === 0)}
-  <h1>Orders</h1>
-  <p>You have no orders.</p>
+  <h2>You have no orders.</h2>
   <NoTab />
 {/if}
 
@@ -126,6 +127,7 @@
 <div class="order-container">
   <!-- I should probably use a table? -->
   <h2>Order Details</h2>
+  <h2>{$emailStore}</h2>
   <button class="back-btn" on:click={() => detailedOrderView = false}>Back</button>
   <!-- making a second line-item div for the header row probably isn't good -->
     <div class="line-item guide">
@@ -213,6 +215,8 @@
 {/if}
 
 <style>
+
+
 
   .orders-container {
     display: flex;

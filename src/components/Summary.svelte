@@ -109,6 +109,9 @@
 
 <div class="summary">
   <h2>Current Order/Cart</h2>
+  {#if $quoteStore.some((quote) => quote.quantity === 0)}
+    <p class="error error-popup">Please enter a quantity/URL for all items</p>
+  {/if}
   <!-- <button class="reset-docs" on:click={listDocs}>query DB for data reset</button> -->
   <table>
     <thead>
@@ -117,6 +120,7 @@
         <th >Type</th>
         <th>Material</th>
         <th>Quant.</th>
+        <th class="url">URL</th>
       </tr>
     </thead>
   {#each $quoteStore as quote}
@@ -126,7 +130,19 @@
         <td>{quote.title}</td>
         <td>{quote.type}</td>
         <td>{quote.material}</td>
-        <td>{quote.quantity}</td>
+        <td class:error={quote.quantity === 0} >{quote.quantity}</td>
+        <td class:error={!quote.url} class="url">
+          {#if quote.url}
+          <span class="check">
+            ✓
+          </span>
+          {:else}
+          <span class="cross">
+            ✕
+          </span>
+          {/if}
+          
+        </td>
       </tr>
     {/if}
     {/each}
@@ -140,7 +156,7 @@
 
 <style>
   .summary {
-    width: 440px;
+    width: 560px;
     padding: 12px;
     background-color: hsla(282, 98%, 29%, 1);
     margin: 5px auto;
@@ -219,4 +235,52 @@
   label {
     margin: 6px;
   }
+
+  .check {
+    font-size: 24px;
+    color: green;
+  }
+
+  .cross {
+    color: red;
+    font-size: 24px;
+  }
+
+  .error-popup {
+    padding: 3px;
+    margin-top: 8px;
+    border-radius: 5px;
+    
+    font-size: 18px;
+    border: 2px solid red;
+    background-color: rgb(206, 88, 88);
+  }
+  
+  .error {
+    animation-name: warningAnimation;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: linear;
+
+
+    outline: 4px solid red;
+    border-radius: 5px;
+  }
+
+  .url {
+    min-width: 46px;
+  }
+
+
+  @keyframes warningAnimation {
+    0% {
+      outline-color: #d44641;
+    }
+    100% {
+      outline-color: #c22f29;
+    }
+  }
+
+
 </style>
