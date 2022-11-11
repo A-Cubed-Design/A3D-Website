@@ -209,8 +209,8 @@
     <button on:click={() => recoveryUser = false}>Cancel</button>
   {:else if urlHasParams}
     <h1>Reset password</h1>
-    <input type="password" id="password" name="password" placeholder="Password" bind:value={password} />
-    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" bind:value={confirmPassword} />
+    <input type="password" id="password" name="password" placeholder="Password" bind:value={newPass} />
+    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" bind:value={newPassConfirm} />
     <button type="submit" on:click={resetPassword}>Reset password</button>
   {:else}
 
