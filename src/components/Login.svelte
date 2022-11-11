@@ -6,6 +6,7 @@
 
   let newUsername = '';
   let newPassword = '';
+  let newName = '';
 
   const client = new Client()
     .setEndpoint("https://api.acubed.design/v1")
@@ -20,7 +21,7 @@
       return;
     }
 
-    const promise = account.create(ID.unique(), newUsername, newPassword);
+    const promise = account.create(ID.unique(), newUsername, newPassword, newName);
 
     promise.then((response) => {
       console.log(response, "user created");
@@ -171,6 +172,13 @@
     });
   }
 
+
+
+  // placeholder
+  const authHandler = () => {
+    alert("This feature is coming soon!");
+  }
+
 </script>
 
 
@@ -192,9 +200,9 @@
     <button type="submit" on:click={login}>Log in</button>
 
     <div class="auth-container">
-      <button>Continue with Google</button>
-      <button>Continue with Facebook</button>
-      <button>Continue with GitHub</button>
+      <button on:click={authHandler}>Continue with Google</button>
+      <button on:click={authHandler}>Continue with Facebook</button>
+      <button on:click={authHandler}>Continue with GitHub</button>
     </div>
 
     <div class="signup">
@@ -216,7 +224,8 @@
 
 
     <div class="new-user-container">
-      <h1>Sign up</h1>
+      <h1>Create Account</h1>
+      <input type="text" id="name" name="name" placeholder="Full name" bind:value={newName} />
       <input type="email" id="username" name="username" placeholder="email" bind:value={newUsername} required />
       <input type="password" id="password" name="password" placeholder="Password" bind:value={newPassword}/>
       <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm password" bind:value={confirmPassword}/>
@@ -232,6 +241,8 @@
   <svelte:window on:keydown={enterHandler} />
 
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
   .login-container {
     display: flex;
     flex-direction: column;
@@ -252,10 +263,12 @@
 
     background: linear-gradient(108deg, hsla(282 98% 29% / 1) 45%, hsla(280 94% 30% / 0.1) 45%);
     box-shadow: #0005 0 5px 16px;
+    position: relative;
   }
 
   h1 {
     margin: 24px;
+    font-family: 'Poppins', sans-serif;
   }
 
 
@@ -264,14 +277,22 @@
     
     padding: 0.5rem;
     margin-bottom: 1rem;
-    border: 1px solid #ccc;
+    border: none;
+    border-bottom: 3px solid #ccc;
     border-radius: 4px;
 
     width: 280px;
 
     background-color: var(--my-gray);
+    
+    font-weight: bold;
     color: white;
     font-size: 1em;
+  }
+
+  input:focus,
+  input:active {
+    outline: none;
   }
 
   input[type="checkbox"] {
@@ -321,8 +342,11 @@
   }
 
   .new-user-container {
-    border: 3px solid white;
     border-radius: 12px;
     padding: 20px;
+  }
+
+  p {
+    margin: 10px;
   }
 </style>

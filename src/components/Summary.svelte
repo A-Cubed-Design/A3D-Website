@@ -113,7 +113,7 @@
     <p class="error error-popup">Please enter a quantity/URL for all items</p>
   {/if}
   <!-- <button class="reset-docs" on:click={listDocs}>query DB for data reset</button> -->
-  <table>
+  <table id="round-table">
     <thead>
       <tr>
         <th>Name</th>
@@ -204,7 +204,7 @@
   }
 
   td {
-    padding: 3px 10px;
+    padding: 1px 10px;
   }
 
   th {
@@ -214,6 +214,7 @@
   td:first-child {
     background-color: hsl(285 20% 50%);
     /* min-width: 90px; */
+    overflow-wrap: anywhere;
   }
 
   tr {
@@ -246,6 +247,12 @@
     font-size: 24px;
   }
 
+  .cross,
+  .check {
+    /* shadow */
+    text-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+  }
+
   .error-popup {
     padding: 3px;
     margin-top: 8px;
@@ -264,23 +271,28 @@
     animation-timing-function: linear;
 
 
-    outline: 4px solid red;
-    border-radius: 5px;
+    /* outline: 4px solid red; */
+    /* border-radius: 5px; */
+    border: 5px solid red;
   }
 
   .url {
-    min-width: 46px;
+    min-width: 26px;
   }
 
 
   @keyframes warningAnimation {
     0% {
-      outline-color: #d44641;
+      border-color: #d44641;
     }
     100% {
-      outline-color: #c22f29;
+      border-color: #c22f29;
     }
   }
 
 
+  #round-table {
+    border-radius: 12px;
+    overflow: hidden;
+  }
 </style>
