@@ -45,6 +45,12 @@
       return;
     }
 
+    // if $quoteStore has any objects with no URL, alert user and return
+    if ($quoteStore.some((quote) => !quote.url)) {
+      alert("Please enter a URL for all items");
+      return;
+    }
+
     const orderId = uuidv4();
 
     $quoteStore.forEach((quote) => {

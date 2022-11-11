@@ -176,7 +176,7 @@
 
   // placeholder
   const authHandler = () => {
-    alert("This feature is coming soon!");
+    alert("This feature is coming soon! Please create an account using an email and password.");
   }
 
 </script>
@@ -211,10 +211,10 @@
     </div>
 
   {:else if recoveryUser}
-    <label for="email">enter email: </label>
-    <input type="email" placeholder="enter email to recover" id="email" bind:value={recoveryEmail}>
+    <label for="email">Enter email: </label>
+    <input type="email" placeholder="Enter email to recover" id="email" bind:value={recoveryEmail}>
     <button on:click={recoverySubmitHandler}>Send recovery email</button>
-    <button on:click={() => recoveryUser = false}>Cancel</button>
+    <button on:click={() => recoveryUser = false} class="cancel">Cancel</button>
   {:else if urlHasParams}
     <h1>Reset password</h1>
     <input type="password" id="password" name="password" placeholder="Password" bind:value={newPass} />
@@ -261,7 +261,8 @@
     flex-grow: 1;
     align-self: center;
 
-    background: linear-gradient(108deg, hsla(282 98% 29% / 1) 45%, hsla(280 94% 30% / 0.1) 45%);
+    /* background: linear-gradient(108deg, hsla(282 98% 29% / 1) 45%, #27233a 45%); */
+    background: linear-gradient(108deg, hsla(282 98% 29% / 1) 45%, #27233a 45%,#27233a 77%, hsla(282 98% 29% / 0.9) 77%);
     box-shadow: #0005 0 5px 16px;
     position: relative;
   }
@@ -321,6 +322,7 @@
 
   a {
     margin-left: auto;
+    cursor: pointer;
   }
 
   .auth-container {
@@ -348,5 +350,15 @@
 
   p {
     margin: 10px;
+  }
+
+  .cancel {
+    margin: 14px;
+  }
+
+  label[for="email"] {
+    font-size: 22px;
+    font-weight: bold;
+    margin: 6px;
   }
 </style>
