@@ -1,6 +1,6 @@
 <script>
   import { createEventDispatcher } from 'svelte';
-  import { Account, Client, Databases, Query } from 'appwrite';
+  import { Account, Client, Databases, Functions, Query } from 'appwrite';
   import AdminInput from './AdminInput.svelte';
   import Status from './Status.svelte';
   import { writable } from 'svelte/store';
@@ -141,6 +141,23 @@ console.log($testArr, "testArr");
 
 }
 
+const functions = new Functions(client);
+
+const handleSendEmail = () => {
+  let confirm = window.confirm("Are you sure you want to send an email?");
+  if (confirm) {
+    // sendEmail();
+    console.log("attempted server function execution");
+
+    let promise = functions.createExecution("636d290363018a943afe", JSON.stringify(myArr));
+
+    promise.then((response) => {
+      console.log(response, "triggering server func 01");
+    }, (error) => {
+      console.log(error, "triggering servre func 02");
+    });
+  }
+}
 
 </script>
 
@@ -177,6 +194,7 @@ console.log($testArr, "testArr");
       {/if}
     </div>
     {/each}
+    <button class="send-email" on:click={handleSendEmail}>send invoice email</button>
     {:else}
     <button class="back" on:click={handleBackModel}>back</button>
     <p class="title">{currentModel.title}</p>
@@ -269,5 +287,14 @@ console.log($testArr, "testArr");
   .check {
     color: green;
     font-size: 32px;
+  }
+
+  .send-email {
+    border-radius: 7px;
+    padding: 9px;
+    margin: 8px;
+    font-size: 1.2em;
+    font-weight: bold;
+    background-color: #a12;
   }
 </style>

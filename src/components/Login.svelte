@@ -109,11 +109,74 @@
 
 
   $: isValidEmail = validateEmail(newUsername);
+
+  $: recoveryUser = false;
+
+  let recoveryEmail;
+
+  const recoveryHandler = () => {
+    recoveryUser = true;
+    console.log('swapping reco user');
+  }
+
+  const recoverySubmitHandler = () => {
+    const promise = account.createRecovery(recoveryEmail, 'https://quote.acubed.design');
+
+    promise.then((response) => {
+      console.log(response, "recovery email sent");
+      alert(`Recovery email sent to ${recoveryEmail}`);
+      recoveryEmail = '';
+      recoveryUser = false;
+    }, (error) => {
+      console.log(error);
+      alert('Invalid email.')
+    });
+  }
+
+  let urlHasParams = false;
+
+
+  // this really ought to be abstracted 
+  const checkUrl = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('userId');
+    const secret = urlParams.get('secret');
+
+    if (userId && secret) {
+      console.log('in if', userId, secret);
+      urlHasParams = true;
+    }
+  }
+
+  checkUrl();
+
+  let newPass;
+  let newPassConfirm;
+
+  const resetPassword = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('userId');
+    const secret = urlParams.get('secret');
+
+    const promise = account.updateRecovery(userId, secret, newPass, newPassConfirm);
+
+    promise.then((response) => {
+      console.log(response, "password reset");
+      alert(`Password reset!`);
+      newPass = '';
+      newPassConfirm = '';
+    }, (error) => {
+      console.log(error);
+      alert('Invalid password and/or token')
+    });
+  }
+
 </script>
 
 
 <div class="login-container">
-  {#if !newUser}
+  <!-- this is getting messy -->
+  {#if !newUser && !recoveryUser && !urlHasParams}
 
     <h1>Sign in</h1>
     <input type="email" id="username" name="username" placeholder="email" bind:value={username}/>
@@ -122,7 +185,8 @@
     <div class="misc-controls">
       <input type="checkbox" id="remember" name="remember" />
       <label for="remember">Remember me</label>
-      <a href="./">Forgot password?</a>
+      <!-- svelte-ignore a11y-missing-attribute -->
+      <a on:click={recoveryHandler}>Forgot password?</a>
     </div>
 
     <button type="submit" on:click={login}>Log in</button>
@@ -138,7 +202,18 @@
       <button on:click={() => newUser = true}>Sign up</button>
     </div>
 
+  {:else if recoveryUser}
+    <label for="email">enter email: </label>
+    <input type="email" placeholder="enter email to recover" id="email" bind:value={recoveryEmail}>
+    <button on:click={recoverySubmitHandler}>Send recovery email</button>
+    <button on:click={() => recoveryUser = false}>Cancel</button>
+  {:else if urlHasParams}
+    <h1>Reset password</h1>
+    <input type="password" id="password" name="password" placeholder="Password" bind:value={password} />
+    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" bind:value={confirmPassword} />
+    <button type="submit" on:click={resetPassword}>Reset password</button>
   {:else}
+
 
     <div class="new-user-container">
       <h1>Sign up</h1>
