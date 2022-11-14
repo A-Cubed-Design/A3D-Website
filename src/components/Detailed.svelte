@@ -1,8 +1,9 @@
 <script>
   import { createEventDispatcher } from 'svelte';
-  import { Account, Client, Databases, Functions, Query } from 'appwrite';
+  import { Account, Client, Databases, Functions, Query, Storage } from 'appwrite';
   import AdminInput from './AdminInput.svelte';
   import Status from './Status.svelte';
+  import Pdf from './Pdf.svelte'
   import { writable } from 'svelte/store';
   import { onMount } from 'svelte';
   
@@ -195,6 +196,7 @@ const handleSendEmail = () => {
     </div>
     {/each}
     <button class="send-email" on:click={handleSendEmail}>send invoice email</button>
+    <Pdf currentOrder={myArr} />
     {:else}
     <button class="back" on:click={handleBackModel}>back</button>
     <p class="title">{currentModel.title}</p>
@@ -221,7 +223,7 @@ const handleSendEmail = () => {
 
     <p>URL: <a target="_blank" href={currentModel.url}>Thingiverse Link</a></p>
     
-    <AdminInput modelId={currentModel.$id}/>
+    <AdminInput modelId={currentModel}/>
   {/if}
     
   </div>

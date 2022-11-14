@@ -1,5 +1,6 @@
 <script>
   import { Account, Client, ID, Databases, Query } from "appwrite";
+  // rename modelId to currentId or something similar
   export let modelId;
 
   const client = new Client()
@@ -45,13 +46,14 @@
     const formData = new FormData(e.target);
     // have to convert
     let json = Object.fromEntries(formData.entries());
-    console.log(`model ID: ${modelId}`);
+    json.orderId = modelId.orderId;
+    console.log(`model ID: ${modelId.$id}`);
     
-    updateTest(modelId, json);
+    updateTest(modelId.$id, json);
     alert('updated values in finals table');
   }
 
-
+  console.log(modelId, "model Idddd");
   // the model's "final" stats, set by the admin
   let modelFinals = {
     electricity: 0,
@@ -61,6 +63,7 @@
     'design-time': 0,
     'markup-percentage': 0,
     comment: '',
+    orderId: modelId.orderId,
   };
 
 
@@ -69,13 +72,14 @@
       "6358796a8d7934bcb3cf",
       "635895eb92e44c6241b2",
       [
-        Query.equal('$id', modelId)
+        Query.equal('$id', modelId.$id)
       ]
     )
 
     promise.then((response) => {
       if (response.documents.length > 0) {
         // I can probably ignore this error(?)
+        // modelFinals.orderId = response.documents[0].orderId
         modelFinals = response.documents[0];
       }
       console.log(modelFinals);
