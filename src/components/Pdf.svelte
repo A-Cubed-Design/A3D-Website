@@ -444,6 +444,7 @@ const handler = () => {
     pdfPreview.getDataUrl((dataUrl) => {
       // attach data to iframe
       ifr.src = dataUrl;
+      ifr.style.display = 'block';
     });
 
 
@@ -495,5 +496,7 @@ const handler = () => {
     padding: 10px 5%;
     height: 750px;
     margin: 0 auto;
+    background-color: #313131;
+    display: none;
   }
 </style>
