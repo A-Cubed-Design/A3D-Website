@@ -187,7 +187,7 @@
   {#if !newUser && !recoveryUser && !urlHasParams}
 
     <h1>Sign in</h1>
-    <input type="email" id="username" name="username" placeholder="email" bind:value={username}/>
+    <input type="email" id="username" name="username" placeholder="Email" bind:value={username}/>
     <input type="password" id="password" name="password" placeholder="Password" bind:value={password} />
 
     <div class="misc-controls">
@@ -226,7 +226,7 @@
     <div class="new-user-container">
       <h1>Create Account</h1>
       <input type="text" id="name" name="name" placeholder="Full name" bind:value={newName} />
-      <input type="email" id="username" name="username" placeholder="email" bind:value={newUsername} required />
+      <input type="email" id="username" name="username" placeholder="Email" bind:value={newUsername} required />
       <input type="password" id="password" name="password" placeholder="Password" bind:value={newPassword}/>
       <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm password" bind:value={confirmPassword}/>
       <button type="submit" on:click={createNewUser}>Sign up</button>
@@ -262,7 +262,7 @@
     align-self: center;
 
     /* background: linear-gradient(108deg, hsla(282 98% 29% / 1) 45%, #27233a 45%); */
-    background: linear-gradient(108deg, hsla(282 98% 29% / 1) 45%, #27233a 45%,#27233a 77%, hsla(282 98% 29% / 0.9) 77%);
+    background: linear-gradient(108deg, hsla(282 98% 29% / 1) 45%, #27233a 45%);
     box-shadow: #0005 0 5px 16px;
     position: relative;
   }
