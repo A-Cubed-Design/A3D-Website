@@ -118,7 +118,7 @@
 <h2>{$emailStore}</h2>
 {#if (orderIds.length === 0)}
 
-  <h2>{$emailStore} You have no orders.</h2>
+  <h2>You have no orders.</h2>
   <NoTab />
 {/if}
 
