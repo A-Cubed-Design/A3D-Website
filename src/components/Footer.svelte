@@ -91,6 +91,7 @@
     .dark-text {
       top: 10px;
       z-index: 5;
+      margin: 4px;
     }
   }
 </style>

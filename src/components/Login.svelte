@@ -67,6 +67,17 @@
     });
   }
 
+
+
+  const oAuthLogin = (provider) => {
+    const promise = account.createOAuth2Session('google');
+  }
+
+
+
+
+
+
   const refreshDocs = () => {
     const promise = databases.listDocuments("6358796a8d7934bcb3cf", "63587d34102e1c615923");
 
@@ -200,7 +211,7 @@
     <button type="submit" on:click={login}>Log in</button>
 
     <div class="auth-container">
-      <button on:click={authHandler}>Continue with Google</button>
+      <button on:click={oAuthLogin}>Continue with Google</button>
       <button on:click={authHandler}>Continue with Facebook</button>
       <button on:click={authHandler}>Continue with GitHub</button>
     </div>
