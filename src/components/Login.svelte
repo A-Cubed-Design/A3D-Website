@@ -94,6 +94,7 @@
 
     promise.then((response) => {
       console.log(response.email, "logged in (check)");
+      $emailStore = response.email;
       $loggedInStore = true;
     }, (error) => {
       console.log(error, "this error only means you're logged out");
