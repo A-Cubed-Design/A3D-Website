@@ -5,11 +5,20 @@
   import Admin from "./components/Admin.svelte";
   import Login from "./components/Login.svelte";
   import Footer from "./components/Footer.svelte";
+  import Mobile from "./components/Mobile.svelte";
 
   import { loggedInStore, emailStore } from "./stores.js";
 
   const testHandler = () => {
     console.log($emailStore);
+  }
+
+
+  let mobileUser = false;
+  if (navigator.maxTouchPoints > 0) {
+    
+    mobileUser = true;
+
   }
 </script>
 
@@ -18,6 +27,8 @@
 
   {#if $loggedInStore && $emailStore === 'admin@email.com' || $loggedInStore && $emailStore === 'garrett@acubed.design'}
     <Admin />
+  {:else if mobileUser}
+    <Mobile/>
   {:else if $loggedInStore}
     <Nav/>
     <TabBody/>

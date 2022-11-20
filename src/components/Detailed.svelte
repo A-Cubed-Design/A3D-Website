@@ -108,7 +108,6 @@ console.log($testArr, "testArr");
   let allStatusSelector;
 
 
-  let processed = false;
    // can this even be abstracted to tatus.svelte?
   const submitAllStatus = () => {
 
@@ -129,16 +128,13 @@ console.log($testArr, "testArr");
       )
 
       promise.then((response) => {
-        processed = true;
-        // doing this so I can log outside of the forEach loop IF it's all done
+        console.log(response);
       }, (error) => {
         console.log(error);
       });
     })
 
-    if (processed) {
-      alert('all status has been updated in DB');
-    }
+    alert('updated all statuses');
 
 }
 

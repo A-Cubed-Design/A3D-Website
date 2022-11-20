@@ -70,4 +70,27 @@
   .linkedin {
     color: #0077B5;
   }
+
+  @media only screen and (max-width: 600px) {
+    /* footer {
+      height: 60px;
+      padding: 0 16px;
+    }
+
+    .svg-content {
+      width: 32px;
+      height: 32px;
+      margin: 4px;
+    } */
+
+    footer {
+      padding-top: 40px;
+      position: relative;
+    }
+
+    .dark-text {
+      top: 10px;
+      z-index: 5;
+    }
+  }
 </style>

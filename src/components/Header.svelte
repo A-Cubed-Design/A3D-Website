@@ -67,6 +67,15 @@
     right: -10px;
 
     transform: rotate(17deg);
+
+  }
+
+
+  @media only screen and (max-width: 600px) {
+    h1 {
+      z-index: 2;
+      font-size: 2.2rem;
+    }
   }
 
 </style>

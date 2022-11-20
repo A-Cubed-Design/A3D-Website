@@ -450,8 +450,8 @@ const handler = () => {
 
 
     const docGen = pdfMake.createPdf(dd);
-    docGen.getDataUrl((dataUrl) => { // base64
-
+    docGen.getDataUrl((dataUrl) => { 
+      
       console.log(dataUrl)
       // ????????????????/
       const byteCharacters = atob(dataUrl.split(',')[1]);
@@ -485,7 +485,7 @@ const handler = () => {
 
 <button on:click={handler}>click me</button>
 <button on:click={uploadDoc}>upload</button>
-<iframe bind:this={ifr} src="" frameborder="0" title='test'></iframe>
+<iframe bind:this={ifr} src="" frameborder="0" title='invoice'></iframe>
 
 
 

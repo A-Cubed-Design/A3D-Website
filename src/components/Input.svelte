@@ -17,7 +17,7 @@
   </div>
   
   <div class="upload-container">
-    <label for="url" id="url">Thingiverse Link to STL:</label>
+    <label for="url" id="url">Link to STL:</label>
     <input type="text" name="url" id="url" bind:value={$quoteStore[activeIndex].url}>
   </div>
   <form class="material-container" action="">
