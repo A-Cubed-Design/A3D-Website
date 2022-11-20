@@ -70,7 +70,7 @@
 
 
   const oAuthLogin = (provider) => {
-    const promise = account.createOAuth2Session('google');
+    const promise = account.createOAuth2Session('google', "https://quote.acubed.design");
   }
 
 
