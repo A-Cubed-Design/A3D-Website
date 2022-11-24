@@ -1,9 +1,12 @@
 <script>
-  import { Account, Client, Databases, ID, Query } from "appwrite";
+  import { Account, Client, Databases, ID, Query, Storage } from "appwrite";
   import { loggedInStore, quoteStore, emailStore } from "../stores";
   import { activeStore } from "../stores";
+  import { statusMap } from "../stores";
   import { onMount } from "svelte";
   import NoTab from "./NoTab.svelte";
+    import Admin from "./Admin.svelte";
+    import AdminInput from "./AdminInput.svelte";
 
   const client = new Client()
     .setEndpoint("https://api.acubed.design/v1")
@@ -110,8 +113,105 @@
     // });
   }
 
+  const cancelHandler = async (e) => {
+    // ask user to confirm
+    if (currentOrder[0].status !== 'order placed') {
+      alert('This order has already been processed and cannot be cancelled. Email Support if you still need to cancel.')
+      return
+    }
+    if(!window.confirm("Are you sure you want to cancel this order?")) return; // this one liner is probably fine
+    console.log(currentOrder, "orderIds/currentORder");
+    let promise = await databases.updateDocument(
+      "6358796a8d7934bcb3cf",
+      "63587d34102e1c615923",
+      currentOrder[0].$id,
+      { status: "cancelled" }
+    );
+
+    console.log(promise, "cancelHandler");
+    detailedOrderView = false;
+  }
   
+  let disabled = false;
+
+
+  let embedTest;
+  let hObj;
+  let ifr;
+
+
+  const storage = new Storage(client);
+
+  const fetchPdf = async () => {
+    let result = storage.getFileView('637295af44c1cf054df6', '637bfca382bbc684fa1d')
+
+    console.log(result.href, 'result.href...');
+    
+    ifr.src = result.href;
+
+
+
+
+    // let response = await fetch('https://api.acubed.design/v1/storage/buckets/637295af44c1cf054df6/files/637bfca382bbc684fa1d/download?project=6357477339689685568e');
+    // let blob = await response.blob();
+    // let metadata = {
+    //   type: 'application/pdf'
+    // };
+    // let file = new File([blob], 'test.pdf', metadata);
+    // // convert to URI
+    // let fileURL = URL.createObjectURL(file);
+
+    // console.log(response, 'fetched response');
+
+
+
+  }
+
+
+  
+
+  const statusMapbackup = new Map([
+    ["cancelled", -1],
+    ["order placed", 0],
+    ["quote in progress", 1],
+    ["quote sent", 2],
+    ["quote approved", 3],
+    ["in printing", 4],
+    ["awaiting payment", 5],
+    ["shipped", 6],
+  ]);
+
+  // function that takes an order and changes all statuses from strings to numbers
+  // const convertStatuses = (order) => {
+  //   order.forEach((quote) => {
+  //     quote.status = statusMapbackup.get(quote.status);
+  //   });
+  //   return order;
+  // };
+
+
+
+  // function that takes a converted order and returns the lowest status of any item in the order
+  const getLowestStatus = (order) => {
+    // order = convertStatuses(order); // this should be moved/improved?
+    console.log(order, 'converted order');
+    let lowestStatus = 7;
+    order.forEach((quote) => {
+      if (quote.status < lowestStatus) {
+        lowestStatus = quote.status;
+      }
+    });
+    return statusMap.get(lowestStatus);
+  };
+  
+
 </script>
+
+<!-- {#each [...statusMap] as [key, value]}
+    <div class="status-text">
+      {key} {value}
+    </div>
+{/each} -->
 
 <!-- this flashes in for a second because orderIds doesn't have a length until queried -->
 <h1 id="view-title">Orders:</h1>
@@ -182,6 +282,16 @@
     </div>
     <p class="address-title">Shipping Address</p>
     <p>{currentAddress}</p>
+    <button on:click={cancelHandler}>cancel order</button>
+    <button on:click={fetchPdf}>view PDF</button>
+    <embed bind:this={embedTest}>
+    <!-- svelte-ignore a11y-missing-attribute -->
+    <!-- <object data="https://api.acubed.design/v1/storage/buckets/637295af44c1cf054df6/files/637bfca382bbc684fa1d/download?project=6357477339689685568e" bind:this={hObj} type="application/pdf"></object> -->
+    <br>
+    <button class="approve">Approve</button>
+    <button class="deny">Deny</button>
+    <iframe bind:this={ifr} src="" frameborder="0" title='invoice'></iframe>
+
   </div>
   {:else}
   
@@ -191,11 +301,11 @@
     {#each orderIds as orderId}
     
   <!-- I could assign the ID to id, instead of data-id -->
-  <div class="order"   data-id={orderId} > <!-- on:click={handleOrderClick} -->
+  
+  <!-- this has to be really inefficient -->
+  {#await fetchOrderDetails(orderId) then order}
+  <div class="order"   data-id={orderId} class:disabled={disabled === true} > <!-- on:click={handleOrderClick} -->
     <p id="order-title">Order {sliceOrderId(orderId)}</p>
-
-    <!-- this has to be really inefficient -->
-    {#await fetchOrderDetails(orderId) then order}
 
       <p class="order-info">Contents: 
         {#each order as quote, i}
@@ -207,10 +317,14 @@
       <p class="order-info">Number of models: {order.length}</p>
       <p class="order-info">Date: {order[0].$createdAt.slice(0, 10)}</p>
       <!-- orderId.slice(-6).toUpperCase(); -->
-      <p class="status">Status: {order[0].status}</p>
+      <!-- <p class="status">Status: ..{order[0].status}</p> -->
+      <p class="status">Status: ..{getLowestStatus(order)}</p>
+      {#if order[0].status === "cancelled"}
+        {disabled = true}
+      {/if}
+      <button class="order-details-btn" on:click={handleOrderClick} data-id={orderId}>Order Details</button>
+    </div>
     {/await}
-    <button class="order-details-btn" on:click={handleOrderClick} data-id={orderId}>Order Details</button>
-  </div>
   {/each}
 </div>
 {/if}
@@ -366,5 +480,32 @@
     font-size: 22px;
     padding: 2px;
     margin: 6px;
+  }
+
+  .disabled {
+    opacity: 0.5;
+  }
+
+  iframe {
+    width: 100%;
+    height: 600px;
+  }
+
+  .approve,
+  .deny {
+    color: white;
+    padding: 8px;
+    margin: 2px;
+    border: none;
+    border-radius: 12px;
+    font-size: 20px;
+  }
+
+  .approve {
+    background-color: green;
+  }
+
+  .deny {
+    background-color: red;
   }
 </style>

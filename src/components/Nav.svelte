@@ -31,7 +31,7 @@
       requirements: '',
       url: '',
       address: '',
-      status: '',
+      status: 0,
     }
     return newQuote;
   }

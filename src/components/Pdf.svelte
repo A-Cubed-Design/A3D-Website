@@ -1,5 +1,5 @@
 <script>
-  import { Databases, Client, Account, Storage, ID } from "appwrite"
+  import { Databases, Client, Account, Functions, Storage, ID, Permission, Role } from "appwrite"
   import pdfMake from '../pdfmake.js'
 
   export let currentOrder;
@@ -462,29 +462,54 @@ const handler = () => {
       const byteArray = new Uint8Array(byteNumbers);
       const blob = new Blob([byteArray], { type: 'application/pdf' });
       const file = new File([blob], `invoice_${currentOrder[0].orderId.slice(-6).toUpperCase()}.pdf`, { type: 'application/pdf' });
-      console.log(file)
+      // console.log(file)
 
       atag = file;
 
     })
   }
 
-  const uploadDoc = () => {
-    const promise = storage.createFile('637295af44c1cf054df6', ID.unique(), atag);
-    promise.then((file) => {
-      window.alert('file uploaded');
-      console.log(file);
-    }), (err) => {
-      window.alert('error');
-      console.log(err);
-    }
+  const functions = new Functions(client);
+
+  const uploadDoc = async () => {
+    // upload
+    const userId = currentOrder[0].$permissions[0].slice(6, -2);
+    console.log(userId)
+
+
+    const promise = await storage.createFile('637295af44c1cf054df6', ID.unique(), atag);
+    window.alert('file uploaded');
+    console.log(promise.$id, 'post currentOrderUpload');
+    currentOrder[0].pdfId = promise.$id;
+    console.log(currentOrder, 'PreSendCurrentOrder')
+    // promise.then((file) => {
+    //   window.alert('file uploaded');
+    //   console.log(file.$id, 'post currentOrderUpload');
+    //   currentOrder[0].pdfId = file.$id;
+    //   console.log(currentOrder, 'PreSendCurrentOrder')
+    // }), (err) => {
+    //   window.alert('error');
+    //   console.log(err);
+    // }
+
+    // use server function to give user permission to file
+    let promise2 = functions.createExecution("636d290363018a943afe", JSON.stringify(currentOrder));
+
+    promise2.then((response) => {
+      console.log(response, "triggering server func 01");
+    }, (error) => {
+      console.log(error, "triggering servre func 02");
+    });
+
+
+
   }
 
 
 </script>
 
 <button on:click={handler}>click me</button>
-<button on:click={uploadDoc}>upload</button>
+<button on:click={uploadDoc}>upload and send</button>
 <iframe bind:this={ifr} src="" frameborder="0" title='invoice'></iframe>
 
 

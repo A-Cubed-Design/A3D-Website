@@ -1,5 +1,7 @@
 <script>
   import { Account, Client, ID, Databases } from "appwrite";
+  import { statusMap } from "../stores.js";
+    import Admin from "./Admin.svelte";
   
   export let currentModel
   export let currentId;
@@ -38,19 +40,21 @@
     );
   }
 
-
 </script>
 
 <select bind:value={currentModel.status} name="status" id="status">status
-  <option value="">-Select status-</option>
+  {#each [...statusMap] as [key, value]}
+    <option value={key}>{value}</option>
+  {/each}
+  <!-- <option value="">-Select status-</option>
   <option value="order placed">Order placed</option>
   <option value="quote in progress">Quote in progress</option>
   <option value="quote sent">Quote sent</option>
   <option value="quote approved">Quote approved</option>
   <option value="in printing">In printing</option>
   <option value="awaiting payment">Awaiting Payment</option>
-  <!-- do we need to break this into 2 states (shipping/shipped)? -->
   <option value="shipped">Shipped</option>
+  <option value="cancelled">Cancelled</option> -->
 </select>
 
 <button on:click={statusHandler}>update status</button>

@@ -62,6 +62,7 @@
     'post-labor': 0,
     'design-time': 0,
     'markup-percentage': 0,
+    'final-price': 0,
     comment: '',
     orderId: modelId.orderId,
   };
@@ -92,9 +93,32 @@
 
   fetchAdminStats();
 
+  // values in USD
+  const costs = {
+    gram: 0.03,
+    electricityMinute: 0.0024,
+    postLabor: 10.00,
+    designLabor: 15.00,
+    maintenance: 0.30,
+  }
 
+  let finalAmount;
+  // this looks ugly but it expresses my intent easily
+  $: finalAmount = (
+    (modelFinals.grams * costs.gram) +
+    (modelFinals.electricity * costs.electricityMinute) +
+    (modelFinals['post-labor'] * costs.postLabor) / 60 +
+    (modelFinals['design-time'] * costs.designLabor) +
+    (modelFinals.maintenance * costs.maintenance)
+  ) * (1 + modelFinals['markup-percentage'] / 100); 
 
+  // I can probably shorten this?
+  $: finalAmount = (Math.round(finalAmount * 100) / 100).toLocaleString('en-US', { useGrouping: false, minimumFractionDigits: 2 });
+  let finalInput;
 
+  const handleCalc = () => {
+    finalInput.value = finalAmount;
+  }
 </script>
 
 <!-- <button on:click={updateTest}>updateTest()</button>
@@ -102,7 +126,7 @@
 
 <form on:submit={submitHandler}>
   <div class="input-container">
-    <label for="electricity">Electricity (Kw/H)</label>
+    <label for="electricity">Print time (minutes)</label>
     <input type="number" name="electricity" id="electricity" placeholder="minutes" bind:value={modelFinals.electricity}>
   </div>
 
@@ -133,8 +157,13 @@
   
   <label for="comment">Notes:</label>
   <textarea name="comment" id="comment" bind:value={modelFinals.comment}></textarea>
- 
-
+  
+  <div class="input-container">
+    <label for="total">Final Amount</label>
+    <p on:click={handleCalc}>calc'd final: {finalAmount}</p>
+    <input bind:this={finalInput} step=".01" type="number" name="final-price" id="final-price" bind:value={modelFinals['final-price']} >
+  </div>
+  
   
   <button>Submit</button>
 </form>

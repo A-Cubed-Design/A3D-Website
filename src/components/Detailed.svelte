@@ -6,6 +6,8 @@
   import Pdf from './Pdf.svelte'
   import { writable } from 'svelte/store';
   import { onMount } from 'svelte';
+  import { statusMap } from '../stores.js';
+    import { bubble } from 'svelte/internal';
   
   const client = new Client()
     .setEndpoint('https://api.acubed.design/v1')
@@ -23,6 +25,10 @@
 
   const toggleDetailedView = () => {
     dispatch('toggleDetailedView');
+  }
+
+  const deleteDispatcher = () => {
+    dispatch('toggleFromDelete', { orderId: myArr[0].orderId });
   }
 
 
@@ -99,7 +105,8 @@ console.log($testArr, "testArr");
  
   const changeAllStatus = (status) => {
     myArr.forEach((model) => {
-      model.status = status;
+      console.log(model);
+      model.status = parseInt(allStatusSelector.value);
     })
     myArr = [...myArr];
   }
@@ -156,6 +163,56 @@ const handleSendEmail = () => {
   }
 }
 
+const deleteHandler = () => {
+  let confirm = window.confirm("Are you sure you want to delete the entire order?");
+  if (!confirm) return;
+  const toDeleteList = myArr.map(a => a.$id);
+  console.log(toDeleteList);
+
+  toDeleteList.forEach((id) => {
+    let promise = databases.deleteDocument(
+      "6358796a8d7934bcb3cf",
+      "63587d34102e1c615923",
+      id
+    )
+
+    promise.then((response) => {
+      console.log(response);
+    }, (error) => {
+      console.log(error);
+    });
+  })
+
+  // change view to zoom admin out after deletion
+  deleteDispatcher();
+
+
+}
+
+
+
+const updateQuantityHandler = () => {
+    let confirm = window.confirm("Are you sure you want to update the quantity?");
+    if (!confirm) return;
+    
+    let promise = databases.updateDocument(
+      "6358796a8d7934bcb3cf",
+      "63587d34102e1c615923",
+      currentModel.$id,
+      { quantity: currentModel.quantity }
+    )
+
+    promise.then((response) => {
+      alert('updated')
+      console.log(response);
+    }, (error) => {
+      alert('error')
+      console.log(error);
+
+    });
+
+  }
+
 </script>
 
 
@@ -169,17 +226,13 @@ const handleSendEmail = () => {
   <button on:click={() => console.log(myArr)}>console</button>
   
   <select bind:this={allStatusSelector} name="status" id="status">status
-    <option value="">-Select status-</option>
-    <option value="order placed">Order placed</option>
-    <option value="quote in progress">Quote in Progress</option>
-    <option value="quote sent">Quote sent</option>
-    <option value="quote approved">Quote approved</option>
-    <option value="in printing">In printing</option>
-    <option value="awaiting payment">Awaiting Payment</option>
-    <option value="shipped">Shipped</option>
+    {#each [...statusMap] as [key, value]}
+      <option value={key}>{value}</option>
+    {/each}
   </select>
   <button on:click={() => {changeAllStatus(allStatusSelector.value)}}>change all status</button>
   <button on:click={submitAllStatus}>submit all status</button>
+  <button on:click={deleteHandler} class="delete">Delete Entire Order!</button>
   
     {#each myArr as quote}
     <div class="quote">
@@ -198,7 +251,8 @@ const handleSendEmail = () => {
     <p class="title">{currentModel.title}</p>
     <p>Type: {currentModel.type}</p>
     <p>Material: {currentModel.material}</p>
-    <p>Quantity: {currentModel.quantity}</p>
+    <label for="quantity">Quantity: </label>
+    <input type="number" name="quantity" id="quantity" bind:value={currentModel.quantity}>
     
     <div class="dimensions">
       height: {currentModel.height}mm width: {currentModel.width}mm 
@@ -208,7 +262,6 @@ const handleSendEmail = () => {
     </div>
 
     <!-- I really shouldn't have to pass in this many things -->
-    <Status {currentModel} currentId={currentModel.$id} {testArr}/>
     
     <p>Email: {currentModel.email}</p>
     <p>Order ID: {currentModel.orderId}</p>
@@ -216,8 +269,12 @@ const handleSendEmail = () => {
     
     <p>Requirements: {currentModel.requirements}</p>
     <p>Description: {currentModel.description}</p>
-
+    
     <p>URL: <a target="_blank" href={currentModel.url}>Thingiverse Link</a></p>
+    <button class="update" on:click={updateQuantityHandler}>Update Values</button>
+    <div id="status-wrapper">
+      <Status {currentModel} currentId={currentModel.$id} {testArr}/>
+    </div>
     
     <AdminInput modelId={currentModel}/>
   {/if}
@@ -294,5 +351,14 @@ const handleSendEmail = () => {
     font-size: 1.2em;
     font-weight: bold;
     background-color: #a12;
+  }
+
+  .delete {
+    background-color: rgb(182, 94, 72);
+    border-radius: 8px;
+  }
+
+  #status-wrapper {
+    margin: 12px;
   }
 </style>

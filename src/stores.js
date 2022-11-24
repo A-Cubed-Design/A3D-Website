@@ -1,5 +1,19 @@
 import { writable } from "svelte/store";
 
+
+
+export const statusMap = new Map([
+  [-1, 'cancelled'],
+  [0, "order placed"],
+  [1, "quote in progress"],
+  [2, "quote sent"],
+  [3, "quote approved"],
+  [4, "in printing"],
+  [5, "awaiting payment"],
+  [6, "shipped"],
+]);
+
+
 // persist an array of objects to localStorage
 export const quoteStore = writable(
   JSON.parse(localStorage.getItem("quoteStore")) || [

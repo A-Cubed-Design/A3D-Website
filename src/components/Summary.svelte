@@ -3,6 +3,7 @@
   import { quoteStore } from "../stores";
   import { activeStore } from "../stores";
   import { v4 as uuidv4 } from "uuid";
+  import GoogleAddress from "./GoogleAddress.svelte";
 
   let total = $quoteStore.reduce((acc, quote) => acc + quote.quantity, 0);
 
@@ -73,7 +74,7 @@
           url: quote.url,
           email: email,
           address: address,
-          status: "order placed",
+          status: 0,
         }
       );
 
@@ -109,6 +110,17 @@
     $quoteStore = [];
   };
   
+
+  const handleAddress = (event) => {
+    console.log(event.detail)
+    // this is terrible??
+    if ( event.detail['full-name'] && event.detail.address && event.detail.city && event.detail.state && event.detail.zip) {
+      address = JSON.stringify(event.detail)
+      alert("Address done!");
+      // instead of making child Google's submit my main submit
+      // I'd need to grab the address data from the child - perhaps stores thus local storage?
+    }
+  }
 
 </script>
 
@@ -156,7 +168,8 @@
   <p class="total">Total: {Math.round(total * 100) / 100} models</p>
   <button class="delete" on:click={deleteAllLocals}>Clear Current Order</button>
   <label for="address">enter shipping address to submit</label>
-  <textarea name="address" id="address" cols="30" rows="7" bind:value={address}></textarea>
+  <textarea name="address" id="address" cols="20" rows="1" bind:value={address}></textarea>
+  <GoogleAddress on:address={handleAddress}/>
   <button on:click={submitHandler}>Submit</button>
 </div>
 

@@ -7,6 +7,8 @@
   import Footer from "./components/Footer.svelte";
   import Mobile from "./components/Mobile.svelte";
 
+  
+
   import { loggedInStore, emailStore } from "./stores.js";
 
   const testHandler = () => {
@@ -20,10 +22,14 @@
     mobileUser = true;
 
   }
+
+
 </script>
 
 <main>
   <Header/>
+
+  
 
   {#if $loggedInStore && $emailStore === 'admin@email.com' || $loggedInStore && $emailStore === 'garrett@acubed.design'}
     <Admin />
