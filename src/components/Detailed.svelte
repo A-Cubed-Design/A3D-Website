@@ -228,6 +228,28 @@ const updateQuantityHandler = () => {
     editing = !editing;
   }
 
+  
+
+  const orderRows = [
+    ['model-title', 'model-quantity', 'model-type'],
+  ];
+
+  let csvContent = "data:text/csv;charset=utf-8,";
+
+  myArr.forEach(obj => {
+    orderRows.push([obj.title, obj.quantity, obj.type]);
+  })
+
+  orderRows.forEach(function(rowArray){
+    let row = rowArray.join(",");
+    csvContent += row + "\r\n";
+  });
+
+  const encodedUri = encodeURI(csvContent);
+  // window.open(encodedUri);
+
+  
+
 </script>
 
 
