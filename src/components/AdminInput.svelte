@@ -65,6 +65,14 @@
     'final-price': 0,
     comment: '',
     orderId: modelId.orderId,
+
+    'electricity-cost': 0.0024,
+    'gram-cost': 0.03,
+    'maintenance-cost': 0.30,
+    'post-labor-cost': 10.00,
+    'design-labor-cost': 15.00,
+
+
   };
 
 
@@ -82,6 +90,7 @@
         // I can probably ignore this error(?)
         // modelFinals.orderId = response.documents[0].orderId
         modelFinals = response.documents[0];
+        modelFinals['final-price'] = modelFinals['final-price'].toFixed(2);
       }
       console.log(modelFinals);
 
@@ -93,23 +102,16 @@
 
   fetchAdminStats();
 
-  // values in USD
-  const costs = {
-    gram: 0.03,
-    electricityMinute: 0.0024,
-    postLabor: 10.00,
-    designLabor: 15.00,
-    maintenance: 0.30,
-  }
+
 
   let finalAmount;
   // this looks ugly but it expresses my intent easily
   $: finalAmount = (
-    (modelFinals.grams * costs.gram) +
-    (modelFinals.electricity * costs.electricityMinute) +
-    (modelFinals['post-labor'] * costs.postLabor) / 60 +
-    (modelFinals['design-time'] * costs.designLabor) +
-    (modelFinals.maintenance * costs.maintenance)
+    (modelFinals.grams * modelFinals['gram-cost']) +
+    (modelFinals.electricity * modelFinals['electricity-cost']) +
+    (modelFinals.maintenance * modelFinals['maintenance-cost']) + 
+    (modelFinals['post-labor'] * modelFinals['post-labor-cost']) / 60 +
+    (modelFinals['design-time'] * modelFinals['design-labor-cost'])
   ) * (1 + modelFinals['markup-percentage'] / 100); 
 
   // I can probably shorten this?
@@ -117,42 +119,94 @@
   let finalInput;
 
   const handleCalc = () => {
-    finalInput.value = finalAmount;
+    // finalInput.value = finalAmount;
+    modelFinals['final-price'] = finalAmount;
   }
-</script>
 
+
+  let editingCosts = false;
+
+  const costHandler = (e) => {
+    e.preventDefault();
+    editingCosts = !editingCosts;
+  }
+
+  
+  const testButtonHandler = () => {
+    // console.log(modelFinals);
+    console.log(typeof finalAmount, typeof modelFinals['final-price'], 'types');
+    console.log(finalAmount)
+    console.log(modelFinals['final-price'])
+  }
+
+    // values in USD*, I'll move this somewhere else(?)
+    const costs = {
+    gram: 0.03,
+    electricityMinute: 0.0024,
+    postLabor: 10.00,
+    designLabor: 15.00,
+    maintenance: 0.30,
+    markup: 5, // *percentage
+  }
+
+  const resetCostsHandler = (e) => {
+    e.preventDefault();
+    modelFinals['gram-cost'] = costs.gram;
+    modelFinals['electricity-cost'] = costs.electricityMinute;
+    modelFinals['post-labor-cost'] = costs.postLabor;
+    modelFinals['design-labor-cost'] = costs.designLabor;
+    modelFinals['maintenance-cost'] = costs.maintenance;
+  }
+
+
+</script>
+<div on:click={testButtonHandler} class="test-button">test button</div>
 <!-- <button on:click={updateTest}>updateTest()</button>
 <button on:click={fetchAdminStats}>query finals DB</button> -->
 
 <form on:submit={submitHandler}>
+  <button on:click={costHandler}>edit costs</button>
+  <button on:click={resetCostsHandler}>reset costs</button>
   <div class="input-container">
     <label for="electricity">Print time (minutes)</label>
     <input type="number" name="electricity" id="electricity" placeholder="minutes" bind:value={modelFinals.electricity}>
+    <span class="x">X</span>
+    <input class:editing={editingCosts} class="costs" type="text" name="electricity-cost" id="elec-cost" bind:value={modelFinals['electricity-cost']}>
   </div>
 
   <div class="input-container">
     <label for="grams">Material (grams)</label>
     <input type="number" name="grams" id="grams" placeholder="grams" bind:value={modelFinals.grams}>
+    <span class="x">X</span>
+    <input class:editing={editingCosts} class="costs" type="text" name="gram-cost" id="gram-cost" bind:value={modelFinals['gram-cost']}>
   </div>
   
   <div class="input-container">
     <label for="">Projected maint.</label>
     <input type="number" name="maintenance" id="maintenance" bind:value={modelFinals.maintenance}>
+    <span class="x">X</span>
+    <input class:editing={editingCosts} class="costs" type="text" name="maintenance-cost" id="maintenance-cost" bind:value={modelFinals['maintenance-cost']}>
   </div>
   
   <div class="input-container">
     <label for="post-labor">Post print labor (mins)</label>
     <input type="number" name="post-labor" id="post-labor" placeholder="minutes" bind:value={modelFinals['post-labor']}>
+    <span class="x">X</span>
+    <input class:editing={editingCosts} class="costs" type="text" name="post-labor-cost" id="post-labor-cost" bind:value={modelFinals['post-labor-cost']}>
+    <span id="sixty">/ 60</span>
   </div>
   
   <div class="input-container">
     <label for="design-time">Design time (hours)</label>
     <input type="number" name="design-time" id="design-time" placeholder="hours" bind:value={modelFinals['design-time']}>
+    <span class="x">X</span>
+    <input class:editing={editingCosts} class="costs" type="text" name="design-labor-cost" id="design-labor-cost" bind:value={modelFinals['design-labor-cost']}>
   </div>
 
   <div class="input-container">
     <label for="markup-percentage">Markup Percentage</label>
     <input type="number" name="markup-percentage" id="markup-percentage" placeholder="%" bind:value={modelFinals['markup-percentage']}>
+    <div class="costs-placeholder"></div>
   </div>
   
   <label for="comment">Notes:</label>
@@ -160,7 +214,7 @@
   
   <div class="input-container">
     <label for="total">Final Amount</label>
-    <p on:click={handleCalc}>calc'd final: {finalAmount}</p>
+    <p class:alert={parseFloat(modelFinals['final-price']) !== parseFloat(finalAmount)} on:click={handleCalc} class="calc">Computed final: {finalAmount}</p>
     <input bind:this={finalInput} step=".01" type="number" name="final-price" id="final-price" bind:value={modelFinals['final-price']} >
   </div>
   
@@ -173,7 +227,7 @@
 <style>
   input {
     font-size: 1.1em;
-    width: 120px;
+    width: 110px;
     background-color: #333;
     color: white;
   }
@@ -181,8 +235,7 @@
   .input-container {
     display: flex;
     align-items: center;
-    width: 70%;
-    justify-content: space-between;
+    width: 96%;
     margin: 3px;
   }
 
@@ -221,4 +274,72 @@
     border-radius: 10px;
     padding: 5px;
   }
+
+  label {
+    margin-right: auto;
+  }
+
+  .costs {
+    text-align: center;
+    border-width: 0px;
+    background-color: transparent;
+    pointer-events: none;
+  }
+
+  .x {
+    font-size: 40px;
+    opacity: 0.6;
+    margin: -0 -13px;
+    font-weight: bold;
+    pointer-events: none;
+  }
+
+  .editing {
+    border-width: 1px;
+    background-color: #333;
+    pointer-events: auto;
+    width: 108px;
+  }
+
+  #sixty {
+    position: absolute;
+    right: 110px;
+    opacity: 0.7;
+  }
+
+  .costs-placeholder {
+    width: 110px;
+  }
+
+  .calc {
+    cursor: pointer;
+    margin: 12px;
+    border: 3px solid white;
+    border-radius: 10px;
+    padding: 4px;
+  }
+
+  /* .alert glow effect */
+  .alert {
+    animation: glow 1s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    from {
+      box-shadow: 0 0 5px #fff,
+        0 0 10px #ff8080,
+        0 0 12px #ff0000;
+
+    }
+
+    to {
+      box-shadow: 0 0 10px #fff,
+        0 0 20px #ff8080,
+        0 0 25px #ff0000;
+
+    }
+  }
+
+  /* end alert */
+  
 </style>

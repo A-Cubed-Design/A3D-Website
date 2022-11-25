@@ -62,6 +62,7 @@
   }
 
   const handleBackModel = () => {
+    editing = false;
     modelView = !modelView;
     checkIfCompleted();
   }
@@ -199,7 +200,14 @@ const updateQuantityHandler = () => {
       "6358796a8d7934bcb3cf",
       "63587d34102e1c615923",
       currentModel.$id,
-      { quantity: currentModel.quantity }
+      { quantity: currentModel.quantity,
+        type: currentModel.type,
+        material: currentModel.material,
+        depth: currentModel.depth,
+        width: currentModel.width,
+        height: currentModel.height,
+        url: currentModel.url,
+      }
     )
 
     promise.then((response) => {
@@ -211,6 +219,13 @@ const updateQuantityHandler = () => {
 
     });
 
+  }
+
+
+  let editing = false;
+
+  const editHandler = () => {
+    editing = !editing;
   }
 
 </script>
@@ -249,15 +264,44 @@ const updateQuantityHandler = () => {
     {:else}
     <button class="back" on:click={handleBackModel}>back</button>
     <p class="title">{currentModel.title}</p>
-    <p>Type: {currentModel.type}</p>
-    <p>Material: {currentModel.material}</p>
-    <label for="quantity">Quantity: </label>
-    <input type="number" name="quantity" id="quantity" bind:value={currentModel.quantity}>
+    <button on:click={editHandler}>Edit values</button>
+
+    {#if editing} 
+      <button class="update" on:click={updateQuantityHandler}>Submit values</button>
+    {/if}
+    <div class="inp-container">
+      <span>Type:</span>
+      {#if editing}
+        <select bind:value={currentModel.type} name="type" id="type">
+          <option value="FDM">FDM</option>
+          <option value="Resin">Resin</option>
+          <option value="Laser">Laser</option>
+        </select>
+      {:else}
+        <span>{currentModel.type}</span>
+      {/if}
+    </div>
+    <div class="inp-container">
+      <label for="material">Material:</label>
+      <input class:editable={editing} type="text" bind:value={currentModel.material} name="material" id="material">
+    </div>
+    
+    <div class="inp-container">
+      <label for="quantity">Quantity: </label>
+      <input class:editable={editing} type="number" name="quantity" id="quantity" bind:value={currentModel.quantity}>
+    </div>
     
     <div class="dimensions">
-      height: {currentModel.height}mm width: {currentModel.width}mm 
+      <label for="length">Length: </label>
+      <input class:editable={editing} type="text" name="length" id="length" bind:value={currentModel.depth}>
+      <span>mm</span>
+      <label for="width">Width: </label>
+      <input class:editable={editing} type="text" name="width" id="width" bind:value={currentModel.width}>
+      <span>mm</span>
       {#if currentModel.type !== "Laser"}
-        length: {currentModel.depth}mm
+        <label for="height">Height:</label>
+        <input class:editable={editing} type="text" name="height" id="height" bind:value={currentModel.height}>
+        <span>mm</span>
       {/if}
     </div>
 
@@ -270,8 +314,14 @@ const updateQuantityHandler = () => {
     <p>Requirements: {currentModel.requirements}</p>
     <p>Description: {currentModel.description}</p>
     
-    <p>URL: <a target="_blank" href={currentModel.url}>Thingiverse Link</a></p>
-    <button class="update" on:click={updateQuantityHandler}>Update Values</button>
+    <div class="inp-container">
+      <label for="url">URL: </label>
+      {#if editing}
+        <input class:editable={editing} type="text" name="url" id="url" bind:value={currentModel.url}>
+      {:else}
+        <a href={currentModel.url}>{currentModel.url}</a>
+      {/if}
+    </div>
     <div id="status-wrapper">
       <Status {currentModel} currentId={currentModel.$id} {testArr}/>
     </div>
@@ -360,5 +410,45 @@ const updateQuantityHandler = () => {
 
   #status-wrapper {
     margin: 12px;
+  }
+
+
+
+  
+  .inp-container {
+    display: flex;
+    gap: 10px;
+  }
+
+  input {
+    width: 70px;
+    font-size: 1em;
+    color: white;
+    margin: 2px;
+    border-width: 0px;
+    pointer-events: none;
+    background-color: transparent;
+  }
+
+  #url {
+    width: 420px;
+  }
+
+  .dimensions > input {
+    width: 50px;
+    text-align: right;
+  }
+
+  .dimensions > span {
+    margin-right: 12px;
+    position: relative;
+    left: -4px;
+  }
+
+
+  .editable {
+    pointer-events: auto; 
+    border-width: 2px;
+    background-color: #444;
   }
 </style>
