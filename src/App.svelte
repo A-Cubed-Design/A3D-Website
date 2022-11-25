@@ -33,7 +33,7 @@
 
   {#if $loggedInStore && $emailStore === 'admin@email.com' || $loggedInStore && $emailStore === 'garrett@acubed.design'}
     <Admin />
-  {:else if mobileUser}
+  {:else if mobileUser === 28934}
     <Mobile/>
   {:else if $loggedInStore}
     <Nav/>
