@@ -70,7 +70,7 @@
 
 
   const oAuthLogin = (provider) => {
-    const promise = account.createOAuth2Session('facebook', "https://quote.acubed.design");
+    const promise = account.createOAuth2Session('github', "https://quote.acubed.design");
 
     checkIfauthenticated(); // can probably remove this later
   }
