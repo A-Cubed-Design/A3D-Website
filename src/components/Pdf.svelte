@@ -1,5 +1,5 @@
 <script>
-  import { Databases, Client, Account, Functions, Storage, ID, Permission, Role } from "appwrite"
+  import { Databases, Client, Account, Functions, Storage, ID, Permission, Role, Query } from "appwrite"
   import pdfMake from '../pdfmake.js'
 
   export let currentOrder;
@@ -75,14 +75,14 @@
         ],
         {
           border: [false, false, false, true],
-          text: '$' + item.price,
+          text: '$' + item.finalPrice,
           fillColor: '#333',
           alignment: 'right',
           margin: [0, 5, 0, 5],
         },
         {
           border: [false, false, false, true],
-          text: '$' + item.price * item.quantity,
+          text: '$' + item.finalPrice * item.quantity,
           fillColor: '#f9f9f9',
           alignment: 'right',
           margin: [0, 5, 0, 5],
@@ -505,6 +505,29 @@ const handler = () => {
 
   }
 
+
+  // query the admin database to get final price of each model
+  const getFinalPrice = async () => {
+    const promise = await databases.listDocuments('6358796a8d7934bcb3cf', '635895eb92e44c6241b2', 
+    [
+      Query.equal('orderId', currentOrder[0].orderId)
+    ]
+    )
+
+    console.log(promise.documents, 'per order promise 001 PDF.svelte')
+
+    // take final price from promise.documents and add to matching object in currentOrder
+    promise.documents.forEach((doc) => {
+      currentOrder.forEach((order) => {
+        if (doc.$id === order.$id) {
+          order.finalPrice = doc['final-price'];
+        }
+      })
+    })
+    // console.log(currentOrder)
+  }
+
+  getFinalPrice();
 
 </script>
 

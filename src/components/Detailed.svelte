@@ -231,26 +231,62 @@ const updateQuantityHandler = () => {
   
 
   const orderRows = [
-    ['model-title', 'model-quantity', 'model-type'],
+    [
+    'model-title', 
+    'model-quantity', 
+    'model-type', 
+    'model-material', 
+    'model-status',
+    'model-height', 
+    'model-width', 
+    'model-depth',
+    'model-url',
+    'model-description',
+    'model-requirements',
+    'model-id',
+    'order-id',
+    'order-email',
+    'order-address',
+  ],
   ];
 
-  let csvContent = "data:text/csv;charset=utf-8,";
+  // let csvContent = "data:text/csv;charset=utf-8,";
 
   myArr.forEach(obj => {
-    orderRows.push([obj.title, obj.quantity, obj.type]);
+    // use statusMap to convert number to string
+    let statusString = statusMap.get(obj.status);
+    let tempAddress = obj.address.replace(/(\r\n|\n|\r)/gm, " ");
+    let tempRow = [
+      obj.title,
+      obj.quantity,
+      obj.type,
+      obj.material,
+      statusString,
+      obj.height,
+      obj.width,
+      obj.depth,
+      obj.url,
+      obj.description,
+      obj.requirements,
+      obj.$id,
+      obj.orderId,
+      obj.email,
+      tempAddress,
+    ];
+    orderRows.push(tempRow);
   })
 
-  orderRows.forEach(function(rowArray){
-    let row = rowArray.join(",");
-    csvContent += row + "\r\n";
-  });
+  const generateCsv = () => {
+    let csvContent = "data:text/csv;charset=utf-8," + orderRows.map(e => e.join(",")).join("\n");
+    const encodedUri = encodeURI(csvContent);
+    return encodedUri;
+  }
 
-  const encodedUri = encodeURI(csvContent);
   // window.open(encodedUri);
-
-  
-
+  let encodedUri = generateCsv();
 </script>
+
+<a href={encodedUri}>anchor link</a>
 
 
 <div class="detailed-view">
