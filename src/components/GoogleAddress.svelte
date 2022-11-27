@@ -14,6 +14,13 @@
       delete json.autocomplete;
       console.log(json, 'json');
       sayAddress(json);
+
+      $addressStore.address = json.address;
+      $addressStore.city = json.city;
+      $addressStore.state = json.state;
+      $addressStore.zip = json.zip;
+      $addressStore.country = json.country;
+      $addressStore['full-name'] = json['full-name'];
     }
 
     function sayAddress(message) {
