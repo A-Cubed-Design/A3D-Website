@@ -220,4 +220,8 @@
   p {
     margin: 3px 0 8px 0;
   }
+
+  #submit {
+    display: none;
+  }
 </style>

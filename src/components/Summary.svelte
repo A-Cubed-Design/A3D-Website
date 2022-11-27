@@ -1,7 +1,6 @@
 <script>
   import { Client, Databases, ID, Account } from "appwrite";
-  import { quoteStore } from "../stores";
-  import { activeStore } from "../stores";
+  import { activeStore, addressStore, quoteStore } from "../stores";
   import { v4 as uuidv4 } from "uuid";
   import GoogleAddress from "./GoogleAddress.svelte";
 
@@ -33,10 +32,30 @@
 
   let address = '';
 
+  const addressValidator = (someStore) => {
+    // there has to be a better way to do this
+    const isValid = Object.entries(someStore).every(([key, value]) => {
+      if (key === 'unit') { // units are optional so return true either way
+        return true;
+      }
+      if (value === '') { // if any other value is empty, return false
+        return false;
+      } else {
+        return true;
+      }
+    });
+    return isValid;
+
+  }
+
   const submitHandler = (event) => {
 
-    if (!address) {
-      alert("Please enter your address");
+    let currentAddress = $addressStore;
+    console.log(currentAddress, 'currentAddress');
+
+    const isValidAddress = addressValidator(currentAddress);
+    if (isValidAddress === false) {
+      alert("Please enter your full address");
       return;
     }
 
@@ -116,7 +135,8 @@
     // this is terrible??
     if ( event.detail['full-name'] && event.detail.address && event.detail.city && event.detail.state && event.detail.zip && event.detail.country) {
       address = JSON.stringify(event.detail)
-      alert("Address done!");
+      // alert("Address done!");
+      console.log('all address inputs filled');
       // instead of making child Google's submit my main submit
       // I'd need to grab the address data from the child - perhaps stores thus local storage?
     }

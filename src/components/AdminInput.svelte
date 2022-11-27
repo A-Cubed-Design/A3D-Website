@@ -1,5 +1,6 @@
 <script>
   import { Account, Client, ID, Databases, Query } from "appwrite";
+  import { quoteStore } from "../stores.js";
   // rename modelId to currentId or something similar
   export let modelId;
 
@@ -110,9 +111,13 @@
     (modelFinals.grams * modelFinals['gram-cost']) +
     (modelFinals.electricity * modelFinals['electricity-cost']) +
     (modelFinals.maintenance * modelFinals['maintenance-cost']) + 
-    (modelFinals['post-labor'] * modelFinals['post-labor-cost']) / 60 +
-    (modelFinals['design-time'] * modelFinals['design-labor-cost'])
-  ) * (1 + modelFinals['markup-percentage'] / 100); 
+    (modelFinals['post-labor'] * modelFinals['post-labor-cost']) / 60 
+    // (modelFinals['design-time'] * modelFinals['design-labor-cost'])
+  ) * (1 + modelFinals['markup-percentage'] / 100) + 
+  ((modelFinals['design-time'] * modelFinals['design-labor-cost']) / $quoteStore[0].quantity); 
+
+  let finalDesignPrice;
+  $: finalDesignPrice = (modelFinals['design-time'] * modelFinals['design-labor-cost']);  
 
   // I can probably shorten this?
   $: finalAmount = (Math.round(finalAmount * 100) / 100).toLocaleString('en-US', { useGrouping: false, minimumFractionDigits: 2 });
@@ -199,9 +204,9 @@
   </div>
   
   <div class="input-container">
-    <label for="design-time">Design time (hours)</label>
+    <label for="design-time">Design time (hours) (per order)</label>
     <input type="number" name="design-time" id="design-time" placeholder="hours" bind:value={modelFinals['design-time']}>
-    <span class="x">X</span>
+
     <input class:editing={editingCosts} class="costs" type="text" name="design-labor-cost" id="design-labor-cost" bind:value={modelFinals['design-labor-cost']}>
   </div>
 

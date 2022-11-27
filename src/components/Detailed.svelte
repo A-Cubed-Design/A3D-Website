@@ -6,7 +6,7 @@
   import Pdf from './Pdf.svelte'
   import { writable } from 'svelte/store';
   import { onMount } from 'svelte';
-  import { statusMap } from '../stores.js';
+  import { statusMap, quoteStore } from '../stores.js';
     import { bubble } from 'svelte/internal';
   
   const client = new Client()
@@ -54,6 +54,7 @@
       console.log(response, "fetch details");
       modelView = !modelView;
       currentModel = response.documents[0]; // there has to be a better way to unpack
+      $quoteStore[0] = currentModel;
     }, (error) => {
       console.log(error);
     });
@@ -234,6 +235,7 @@ const updateQuantityHandler = () => {
     [
     'model-title', 
     'model-quantity', 
+    'model-final-price',
     'model-type', 
     'model-material', 
     'model-status',
@@ -259,6 +261,8 @@ const updateQuantityHandler = () => {
     let tempRow = [
       obj.title,
       obj.quantity,
+      // final price with 2 trailing zeros
+      obj.finalPrice.toFixed(2),
       obj.type,
       obj.material,
       statusString,
