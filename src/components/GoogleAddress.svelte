@@ -127,7 +127,7 @@
 
   <div class="form-div">
     <label for="autocomplete">Address</label>
-    <input bind:value={$addressStore.autocomplete} type="text" name="autocomplete" id="autocomplete" placeholder="Address">
+    <input bind:value={$addressStore.address} type="text" name="autocomplete" id="autocomplete" placeholder="Address">
   </div>
 
   <div class="form-div">
