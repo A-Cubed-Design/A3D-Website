@@ -27,7 +27,6 @@
       dispatch("address", message);
     }
 
-    let currentAddress = $addressStore;
 
 
 
@@ -102,6 +101,9 @@
         };
 
         console.log(addressObject, 'addressObject');
+
+        submitButton = document.getElementById("submit");
+        submitButton.click();
       })
 
 
@@ -160,7 +162,7 @@
   </div>
 
   <!-- <input type="submit" name="submit" id="submit"> -->
-  <button>submit</button>
+  <button id='submit'>submit</button>
 </form>
 
 
