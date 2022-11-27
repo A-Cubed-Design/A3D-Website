@@ -83,10 +83,10 @@
           city: city.long_name,
           state: state.short_name,
           zip: zip.long_name,
-
+          country: country.long_name
         };
 
-        console.log(typeof JSON.stringify(addressObject));
+        console.log(addressObject, 'addressObject');
       })
 
 
@@ -165,14 +165,30 @@
   }
 
   input {
-    /* width: 300px; */
+    width: 210px;
+    box-sizing: border-box;
     font-size: 1rem;
-    margin: 4px;
+
     padding: 3px;
+    background-color: #3b3b3b;
+    color: #d3d3d3;
+    border: 1px solid #888;
+    border-radius: 5px;
+  }
+
+  input:hover {
+    border-color: #ccc;
+  }
+
+  .form-div {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 3px;
   }
 
   .short {
-    width: 100px !important;
+    width: 100px;
     margin-right: 110px;
   }
 
@@ -181,5 +197,9 @@
     display: inline-block;
     text-align: right;
     margin-right: 10px;
+  }
+
+  p {
+    margin: 3px 0 8px 0;
   }
 </style>

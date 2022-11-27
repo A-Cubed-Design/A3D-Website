@@ -112,9 +112,9 @@
   
 
   const handleAddress = (event) => {
-    console.log(event.detail)
+    console.log(event.detail, 'handleAddress event.detail')
     // this is terrible??
-    if ( event.detail['full-name'] && event.detail.address && event.detail.city && event.detail.state && event.detail.zip) {
+    if ( event.detail['full-name'] && event.detail.address && event.detail.city && event.detail.state && event.detail.zip && event.detail.country) {
       address = JSON.stringify(event.detail)
       alert("Address done!");
       // instead of making child Google's submit my main submit
