@@ -25,7 +25,6 @@
   <script
     defer
     async
-    temp=""
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCP-THEtN8aeSJ_yBHwi48UsKW3KzYQV5E&libraries=places&callback=initMap">
   </script>
 
@@ -43,7 +42,7 @@
 
       autocomplete.addListener("place_changed", () => {
         const place = autocomplete.getPlace();
-        console.log(place.address_components[0]);
+        console.log(place.address_components, 'place address_components');
 
         // this has to be bad right?
         const streetAddress = place.address_components.find((component) => {
@@ -66,8 +65,13 @@
           return component.types.includes("postal_code");
         });
 
+        const country = place.address_components.find((component) => {
+          return component.types.includes("country");
+        });
+
         // console.log(streetNumber);
 
+        document.getElementById("country").value = country.long_name;
         document.getElementById("city").value = city.long_name;
         document.getElementById("state").value = state.short_name;
         document.getElementById("zip").value = zip.long_name;
@@ -78,7 +82,8 @@
           streetName: streetName.long_name,
           city: city.long_name,
           state: state.short_name,
-          zip: zip.long_name
+          zip: zip.long_name,
+
         };
 
         console.log(typeof JSON.stringify(addressObject));
@@ -96,6 +101,7 @@
 
 
 <form on:submit={testHandler} class="address-container">
+  <p>Enter Address to submit: </p>
 
   <div class="form-div">
     <label for="full-name">Full Name</label>
@@ -133,9 +139,10 @@
     <input type="text" name="zip" id="zip" placeholder="Zip" class="short">
   </div>
   
-  <select name="" id="">
-    <option value="1">do we country dropdown??</option>
-  </select>
+  <div class="form-div">
+    <label for="country">Country: </label>
+    <input type="text" name="country" id="country" placeholder="Country" class="short">
+  </div>
 
   <!-- <input type="submit" name="submit" id="submit"> -->
   <button>submit</button>
@@ -150,9 +157,11 @@
     justify-content: center;
     align-items: center;
 
-    background-color: #222;
+    background-color: #2224;
+    border-radius: 12px;
     width: 400px;
     padding: 8px;
+    margin-top: 10px;
   }
 
   input {

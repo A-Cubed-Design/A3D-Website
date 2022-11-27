@@ -167,8 +167,6 @@
   </table>
   <p class="total">Total: {Math.round(total * 100) / 100} models</p>
   <button class="delete" on:click={deleteAllLocals}>Clear Current Order</button>
-  <label for="address">enter shipping address to submit</label>
-  <textarea name="address" id="address" cols="20" rows="1" bind:value={address}></textarea>
   <GoogleAddress on:address={handleAddress}/>
   <button on:click={submitHandler}>Submit</button>
 </div>
