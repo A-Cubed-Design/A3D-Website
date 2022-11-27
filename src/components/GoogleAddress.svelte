@@ -1,6 +1,6 @@
 <script>
     import { createEventDispatcher } from "svelte";
-    import { addressStore } from "../stores";
+    import { addressStore, loggedInStore } from "../stores";
 
     const dispatch = createEventDispatcher();
 
@@ -52,6 +52,7 @@
 
 
       autocomplete.addListener("place_changed", () => {
+        console.log('top of place_changed');
         const place = autocomplete.getPlace();
         console.log(place.address_components, 'place address_components');
 
