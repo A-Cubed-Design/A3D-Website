@@ -1,5 +1,6 @@
 <script>
     import { createEventDispatcher } from "svelte";
+    import { addressStore } from "../stores";
 
     const dispatch = createEventDispatcher();
 
@@ -11,13 +12,17 @@
 
       json.address = json.autocomplete;
       delete json.autocomplete;
-      // console.log(json);
+      console.log(json, 'json');
       sayAddress(json);
     }
 
     function sayAddress(message) {
       dispatch("address", message);
     }
+
+    let currentAddress = $addressStore;
+
+
 
 </script>
 
@@ -69,6 +74,8 @@
           return component.types.includes("country");
         });
 
+        const fullName = document.getElementById("full-name").value;
+
         // console.log(streetNumber);
 
         document.getElementById("country").value = country.long_name;
@@ -83,7 +90,8 @@
           city: city.long_name,
           state: state.short_name,
           zip: zip.long_name,
-          country: country.long_name
+          country: country.long_name,
+          'full-name': document.getElementById("full-name").value
         };
 
         console.log(addressObject, 'addressObject');
@@ -105,43 +113,43 @@
 
   <div class="form-div">
     <label for="full-name">Full Name</label>
-    <input type="text" name="full-name" id="full-name" placeholder="Full name">
+    <input bind:value={$addressStore['full-name']} type="text" name="full-name" id="full-name" placeholder="Full name">
 
   </div>
 
 
   <div class="form-div">
     <label for="autocomplete">Address</label>
-    <input type="text" name="autocomplete" id="autocomplete" placeholder="Address">
+    <input bind:value={$addressStore.autocomplete} type="text" name="autocomplete" id="autocomplete" placeholder="Address">
   </div>
 
   <div class="form-div">
     
     <label for="unit">unit</label>
-    <input type="text" name="unit" id="unit" placeholder="apt/unit">
+    <input bind:value={$addressStore.unit} type="text" name="unit" id="unit" placeholder="apt/unit">
   </div>
 
   
   <div class="form-div">
     <label for="city">City</label>
-    <input type="text" name="city" id="city" placeholder="City">
+    <input bind:value={$addressStore.city} type="text" name="city" id="city" placeholder="City">
   </div>
 
   <div class="form-div">
     <label for="state">State</label>
-    <input type="text" name="state" id="state" placeholder="State" class="short">
+    <input bind:value={$addressStore.state} type="text" name="state" id="state" placeholder="State" class="short">
   </div>
   
 
 
   <div class="form-div">
     <label for="zip">Zip</label>
-    <input type="text" name="zip" id="zip" placeholder="Zip" class="short">
+    <input bind:value={$addressStore.zip} type="text" name="zip" id="zip" placeholder="Zip" class="short">
   </div>
   
   <div class="form-div">
     <label for="country">Country: </label>
-    <input type="text" name="country" id="country" placeholder="Country" class="short">
+    <input bind:value={$addressStore.country} type="text" name="country" id="country" placeholder="Country" class="short">
   </div>
 
   <!-- <input type="submit" name="submit" id="submit"> -->

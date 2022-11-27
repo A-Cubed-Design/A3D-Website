@@ -14,6 +14,27 @@ export const statusMap = new Map([
 ]);
 
 
+
+export const addressStore = writable(
+  JSON.parse(localStorage.getItem('address')) || {
+    'full-name': '',
+    autocomplete: '',
+    unit: '',
+    city: '',
+    state: '',
+    zip: '',
+    country: '',
+  }
+)
+
+addressStore.subscribe(value => {
+  localStorage.setItem('address', JSON.stringify(value))
+})
+
+  
+
+
+
 // persist an array of objects to localStorage
 export const quoteStore = writable(
   JSON.parse(localStorage.getItem("quoteStore")) || [
