@@ -69,8 +69,10 @@
 
 
 
-  const oAuthLogin = (provider) => {
-    const promise = account.createOAuth2Session('github', "https://quote.acubed.design");
+  const oAuthLogin = (event) => {
+    const provider = event.target.dataset.provider;
+    console.log(provider, "provider");
+    const promise = account.createOAuth2Session(provider, "https://quote.acubed.design");
 
     checkIfauthenticated(); // can probably remove this later
   }
@@ -214,9 +216,9 @@
     <button type="submit" on:click={login}>Log in</button>
 
     <div class="auth-container">
-      <button on:click={oAuthLogin}>Continue with Google</button>
-      <button on:click={authHandler}>Continue with Facebook</button>
-      <button on:click={authHandler}>Continue with GitHub</button>
+      <button data-provider='google' on:click={oAuthLogin}>Continue with Google</button>
+      <button data-provider='facebook' on:click={oAuthLogin}>Continue with Facebook</button>
+      <button data-provider='github' on:click={oAuthLogin}>Continue with GitHub</button>
     </div>
 
     <div class="signup">
