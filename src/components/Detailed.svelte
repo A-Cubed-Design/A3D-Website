@@ -125,6 +125,7 @@ console.log($testArr, "testArr");
       let tempModel = model;
       
       tempModel.$id = model.$id;
+      // don't need to upload these
       delete tempModel.$collectionId;
       delete tempModel.$databaseId;
 

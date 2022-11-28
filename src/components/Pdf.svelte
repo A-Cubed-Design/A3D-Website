@@ -83,6 +83,38 @@
     // dd.content[0].table.body.push
     // console.log(dd.content[12].table.body[0][1].text, 'dd.content[13].table.body');
     dd.content[12].table.body[0][1].text = tempTotal.toFixed(2);
+    currentOrder.forEach((item) => {
+      dynamicTable.push([
+        {
+          text: item.quantity,
+          border: [false, false, false, true],
+          alignment: 'center',
+        },
+        [
+          {
+            text: item.title,
+            bold: true,
+          },
+          {
+            text: ` Type: ${item.type} Material: ${item.material} H: ${item.height} W: ${item.width} D: ${item.depth}`,
+          },
+        ],
+        {
+          border: [false, false, false, true],
+          text: '$' + item.finalPrice,
+          fillColor: '#333',
+          alignment: 'right',
+          margin: [0, 5, 0, 5],
+        },
+        {
+          border: [false, false, false, true],
+          text: '$' + item.finalPrice * item.quantity,
+          fillColor: '#f9f9f9',
+          alignment: 'right',
+          margin: [0, 5, 0, 5],
+        },
+      ])
+    })
   }
 
   asyncPlaceholder();
@@ -131,38 +163,7 @@
           ]
 
     console.log(currentOrder, 'currentOrder pre push to dynamicTable');
-    currentOrder.forEach((item) => {
-      dynamicTable.push([
-        {
-          text: item.quantity,
-          border: [false, false, false, true],
-          alignment: 'center',
-        },
-        [
-          {
-            text: item.title,
-            bold: true,
-          },
-          {
-            text: ` Type: ${item.type} Material: ${item.material} H: ${item.height} W: ${item.width} D: ${item.depth}`,
-          },
-        ],
-        {
-          border: [false, false, false, true],
-          text: '$' + item.finalPrice,
-          fillColor: '#333',
-          alignment: 'right',
-          margin: [0, 5, 0, 5],
-        },
-        {
-          border: [false, false, false, true],
-          text: '$' + item.finalPrice * item.quantity,
-          fillColor: '#f9f9f9',
-          alignment: 'right',
-          margin: [0, 5, 0, 5],
-        },
-      ])
-    })
+
 
 
   let dd = {
@@ -549,7 +550,38 @@ const handler = () => {
 
   const functions = new Functions(client);
 
+  // this method has way too much functionality, I should abstract in some way
+  // also I want to make each step require the previous one to resolve
   const uploadDoc = async () => {
+    // before uploading the document, 
+    // update the state of all the documents in the order
+    currentOrder.forEach((doc) => {
+      let tempPromise = databases.updateDocument(
+        "6358796a8d7934bcb3cf",
+        "63587d34102e1c615923",  
+        doc.$id,
+        {
+        status: 2,
+      });
+
+      tempPromise.then((res) => {
+        console.log(res, 'updater');
+      })
+      .catch((err) => {
+        console.log(err, 'failed updater');
+      });
+    });
+
+    // query the database to get a list of all the documents with the same name
+    const toBeDeleted = await storage.listFiles('637295af44c1cf054df6', [], 'invoice_6AACF3')
+    console.log(toBeDeleted, 'upload listpromise');
+
+    // delete all the documents with the same name
+    toBeDeleted.files.forEach(async (file) => {
+      const awaitingDelete = await storage.deleteFile('637295af44c1cf054df6', file.$id);
+      console.log(awaitingDelete, 'awaiting delete');
+    })
+
     // upload
     const userId = currentOrder[0].$permissions[0].slice(6, -2);
     console.log(userId)
