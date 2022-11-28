@@ -4,6 +4,38 @@
 
   export let currentOrder;
 
+  console.log(currentOrder[0], 'first current order at UP');
+
+  let tempArray = currentOrder;
+
+  // let orderTotal = currentOrder.reduce(function (accumulator, currentValue) {
+  //   return accumulator + currentValue.finalPrice * currentValue.quantity;
+  // }, 0);
+
+  console.log(tempArray[0], 'currentOrder[0].finalPrice TIIIP TOP');
+
+  let orderTotal;
+  currentOrder.forEach(item => {
+    // console.log(`finalprice: ${item.finalPrice}, quantity: ${item.quantity}, total: ${orderTotal}`);
+    // orderTotal += item.finalPrice * item.quantity;
+    console.log(item.finalPrice, 'ITEM')
+  });
+
+  // let formattedTotal = orderTotal.toFixed(2);
+
+  console.log(currentOrder, 'currentOrder top');
+  console.log(orderTotal, 'top')
+
+  const logIt = () => {
+    console.log('...');
+  }
+
+  
+
+  
+  console.log(currentOrder, 'currentOrder in pdf.svelte');
+  // console.log('order total', orderTotal);
+
   let atag;
   let ifr;
 
@@ -13,6 +45,48 @@
   const account = new Account(client);
   const databases = new Databases(client);
   const storage = new Storage(client);
+
+  // query the admin database to get final price of each model
+  let tempTotal = 0;
+  const getFinalPrice = async () => {
+
+
+    const promise = await databases.listDocuments('6358796a8d7934bcb3cf', '635895eb92e44c6241b2', 
+    [
+      Query.equal('orderId', currentOrder[0].orderId)
+    ]
+    )
+
+    console.log(promise.documents, 'per order promise 001 PDF.svelte')
+
+    // take final price from promise.documents and add to matching object in currentOrder
+    promise.documents.forEach((doc) => {
+      
+      currentOrder.forEach((order) => {
+        if (doc.$id === order.$id) {
+          order.finalPrice = doc['final-price'];
+          console.log(doc['final-price'], 'FFF')
+          tempTotal += doc['final-price'] * order.quantity;
+        }
+      })
+    })
+    console.log(tempTotal, 'tempTotal');
+    console.log(currentOrder[0].finalPrice, 'inside getFinalPrice');
+
+  }
+
+  // getFinalPrice();
+
+  const asyncPlaceholder = async () => {
+    await getFinalPrice();
+    console.log(currentOrder[0].finalPrice, 'ENDENDENDENDEDNNDKLNFDKLSFNF:SKFLJLK')
+    // dd.content[0].table.body.push
+    // console.log(dd.content[12].table.body[0][1].text, 'dd.content[13].table.body');
+    dd.content[12].table.body[0][1].text = tempTotal.toFixed(2);
+  }
+
+  asyncPlaceholder();
+  console.log(tempTotal, 'top temp total above table')
 
   let dynamicTable = [
             
@@ -56,7 +130,7 @@
  
           ]
 
-
+    console.log(currentOrder, 'currentOrder pre push to dynamicTable');
     currentOrder.forEach((item) => {
       dynamicTable.push([
         {
@@ -90,7 +164,8 @@
       ])
     })
 
-  var dd = {
+
+  let dd = {
   content: [
     
       { 
@@ -358,7 +433,7 @@
             },
             {
               border: [false, true, false, true],
-              text: '$999.99',
+              text: tempTotal,
               alignment: 'right',
               fillColor: '#f5f5f5',
               margin: [0, 5, 0, 5],
@@ -440,6 +515,9 @@
 
 
 const handler = () => {
+  // console.log(dd, 'DD');
+  // console.log(formattedTotal, 'pre DD');
+  // console.log(dd.content[12].table.body[0][1], 'DD');
     const pdfPreview = pdfMake.createPdf(dd);
     pdfPreview.getDataUrl((dataUrl) => {
       // attach data to iframe
@@ -452,7 +530,7 @@ const handler = () => {
     const docGen = pdfMake.createPdf(dd);
     docGen.getDataUrl((dataUrl) => { 
       
-      console.log(dataUrl)
+      // console.log(dataUrl)
       // ????????????????/
       const byteCharacters = atob(dataUrl.split(',')[1]);
       const byteNumbers = new Array(byteCharacters.length);
@@ -506,30 +584,41 @@ const handler = () => {
   }
 
 
-  // query the admin database to get final price of each model
-  const getFinalPrice = async () => {
-    const promise = await databases.listDocuments('6358796a8d7934bcb3cf', '635895eb92e44c6241b2', 
-    [
-      Query.equal('orderId', currentOrder[0].orderId)
-    ]
-    )
+  // // query the admin database to get final price of each model
+  // const getFinalPrice = async () => {
+  //   const promise = await databases.listDocuments('6358796a8d7934bcb3cf', '635895eb92e44c6241b2', 
+  //   [
+  //     Query.equal('orderId', currentOrder[0].orderId)
+  //   ]
+  //   )
 
-    console.log(promise.documents, 'per order promise 001 PDF.svelte')
+  //   console.log(promise.documents, 'per order promise 001 PDF.svelte')
 
-    // take final price from promise.documents and add to matching object in currentOrder
-    promise.documents.forEach((doc) => {
-      currentOrder.forEach((order) => {
-        if (doc.$id === order.$id) {
-          order.finalPrice = doc['final-price'];
-        }
-      })
-    })
-    // console.log(currentOrder)
-  }
+  //   // take final price from promise.documents and add to matching object in currentOrder
+  //   promise.documents.forEach((doc) => {
 
-  getFinalPrice();
+  //     currentOrder.forEach((order) => {
+  //       if (doc.$id === order.$id) {
+  //         order.finalPrice = doc['final-price'];
+  //       }
+  //     })
+  //   })
+
+  //   // console.log(currentOrder)
+
+  // }
+
+  // getFinalPrice();
+
+  // console.log(currentOrder, 'adhkfldjafdfjfkldajfkla')
+
+  
+
+  
 
 </script>
+
+<button on:click={logIt}>hfdjksfaj</button>
 
 <button on:click={handler}>click me</button>
 <button on:click={uploadDoc}>upload and send</button>

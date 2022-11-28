@@ -261,8 +261,7 @@ const updateQuantityHandler = () => {
     let tempRow = [
       obj.title,
       obj.quantity,
-      // final price with 2 trailing zeros
-      obj.finalPrice.toFixed(2),
+      obj['final-price'],
       obj.type,
       obj.material,
       statusString,
