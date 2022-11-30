@@ -38,6 +38,9 @@
       if (key === 'unit') { // units are optional so return true either way
         return true;
       }
+      if (key === 'autocomplete') { 
+        return true
+      }
       if (value === '') { // if any other value is empty, return false
         return false;
       } else {
