@@ -118,33 +118,63 @@ console.log($testArr, "testArr");
 
 
    // can this even be abstracted to tatus.svelte?
-  const submitAllStatus = () => {
+  const submitAllStatus = async () => {
 
 
-    myArr.forEach((model) => {
+    // myArr.forEach( async (model) => {
+    //   let tempModel = model;
+      
+    //   tempModel.$id = model.$id;
+    //   // don't need to upload these
+    //   delete tempModel.$collectionId;
+    //   delete tempModel.$databaseId;
+    //   delete tempModel.finalPrice;
+
+    //   // this can't be good
+    //   await new Promise(r => setTimeout(r, 200));
+
+    //   await databases.updateDocument(
+    //     "6358796a8d7934bcb3cf",
+    //     "63587d34102e1c615923",
+    //     model.$id,
+    //     tempModel
+    //   )
+
+    //   .then((response) => {
+    //     console.log(response);
+    //   }, (error) => {
+    //     console.log(error, 'testerr');
+    //   });
+    // })
+
+    for (const model of myArr) {
       let tempModel = model;
       
       tempModel.$id = model.$id;
       // don't need to upload these
       delete tempModel.$collectionId;
       delete tempModel.$databaseId;
+      delete tempModel.finalPrice;
 
+      // this can't be good
+      // await new Promise(r => setTimeout(r, 200));
 
-      let promise = databases.updateDocument(
+      await databases.updateDocument(
         "6358796a8d7934bcb3cf",
         "63587d34102e1c615923",
         model.$id,
         tempModel
       )
 
-      promise.then((response) => {
+      .then((response) => {
         console.log(response);
       }, (error) => {
-        console.log(error);
+        console.log(error, 'testerr');
       });
-    })
+    }
 
-    alert('updated all statuses');
+
+    alert("All statuses updated!");
 
 }
 

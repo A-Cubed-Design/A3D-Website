@@ -21,6 +21,8 @@
     // there has to be a better way than cloning and deleting
     delete tempModel.$collectionId;
     delete tempModel.$databaseId;
+    // tempModel['final-price'] = tempModel.finalPrice;
+    delete tempModel.finalPrice;
 
     let promise = databases.updateDocument(
       "6358796a8d7934bcb3cf",

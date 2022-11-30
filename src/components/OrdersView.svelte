@@ -15,6 +15,7 @@
   const databases = new Databases(client);
 
   let orderIds = [];
+  let pdfView = false;
 
   // save orderIds to local storage so there isn't a loading delay
   const saveOrderIds = () => {
@@ -87,7 +88,7 @@
         currentAddress = response.documents[0].address
         currentStatus = response.documents[0].status
     }, function (error) {
-        console.log(error);
+        console.log(error, 'err1');
     });
 
     detailedOrderView = true;
@@ -143,11 +144,33 @@
   const storage = new Storage(client);
 
   const fetchPdf = async () => {
-    let result = storage.getFileView('637295af44c1cf054df6', '637bfca382bbc684fa1d')
-
-    console.log(result.href, 'result.href...');
     
+    
+    const promise = await storage.listFiles('637295af44c1cf054df6');
+    let fileData = promise.files;
+    console.log(fileData, 'promisePDF.listFiles()');
+    
+    let shortOrderId = currentOrder[0].orderId.slice(-6).toUpperCase();
+    console.log(shortOrderId, 'currentOrder[0].orderId');
+    
+    // later I can add functionality so it only grabs the most recent obj with the same orderId
+    // as a double check or alternate way to handle the figuring out the most recent pdf
+    let pdfObj = fileData.find((obj) => {
+      return obj.name.slice(-10, -4).toUpperCase() === shortOrderId;
+    });
+    
+    console.log(pdfObj.$id, 'pdfObj');
+    
+    
+    
+    
+    pdfView = true;
+    let result = await storage.getFileView('637295af44c1cf054df6', pdfObj.$id);
+    console.log(result.href, 'result.href...');
     ifr.src = result.href;
+
+
+
 
 
 
@@ -181,29 +204,135 @@
     ["shipped", 6],
   ]);
 
-  // function that takes an order and changes all statuses from strings to numbers
-  // const convertStatuses = (order) => {
+
+
+
+  // const getLowestStatus = (order) => {
+  //   console.log(order, 'converted order');
+  //   let lowestStatus = 7;
   //   order.forEach((quote) => {
-  //     quote.status = statusMapbackup.get(quote.status);
+  //     console.log(quote.status, 'quote.status() or something')
+  //     if (quote.status == 3) {
+  //       return statusMap.get(3)
+  //     } else if (quote.status === 4) {
+  //       return statusMap.get(4)
+  //     } 
+  //     else if (quote.status < lowestStatus) {
+  //       lowestStatus = quote.status;
+
+  //     }
   //   });
-  //   return order;
+  //   return statusMap.get(lowestStatus);
   // };
 
-
-
-  // function that takes a converted order and returns the lowest status of any item in the order
   const getLowestStatus = (order) => {
-    // order = convertStatuses(order); // this should be moved/improved?
-    console.log(order, 'converted order');
-    let lowestStatus = 7;
+    let lowestState = 7;
+    let userState = 0;
     order.forEach((quote) => {
-      if (quote.status < lowestStatus) {
-        lowestStatus = quote.status;
+      if (quote.status == 3) {
+        userState = 3;
+      } 
+      else if (quote.status == 4) {
+        userState = 4;
+      } else if (quote.status <= lowestState) {
+        lowestState = quote.status;
       }
+       
     });
-    return statusMap.get(lowestStatus);
+    // return statusMap.get(lowestState);
+
+    if (userState) {
+      return statusMap.get(userState);
+    } else {
+      return statusMap.get(lowestState);
+    }
   };
   
+
+
+  const approveHandler = () =>{
+
+    let tempPromise = databases.updateDocument(
+      "6358796a8d7934bcb3cf",
+      "63587d34102e1c615923",
+      currentOrder[0].$id,
+      { status: 4 }
+    );
+
+    tempPromise.then(function (response) {
+      console.log(response, 'approveHandler');
+      currentStatus = 4;
+      // call make.com server function here to alert slack, without an attached reason
+    }, function (error) {
+      console.log(error);
+    });
+
+
+    // currentOrder.forEach( (quote) => {
+    //   console.log(quote.$id, 'approve handler loop')
+
+    //   quote.status = 3;
+    //   currentStatus = 3;
+    //   delete quote.$collectionId;
+    //   delete quote.$databaseId;
+
+    //   let temp = databases.updateDocument(
+    //     "6358796a8d7934bcb3cf",
+    //     "63587d34102e1c615923",
+    //     quote.$id,
+    //     quote,
+    //   );
+
+    //   temp.then(function (response) {
+    //     console.log(response, 'approveHandler');
+    //   }, function (error) {
+    //     console.log(error);
+    //   });
+      
+
+
+    // });
+  }
+
+  const denyHandler = async () => {
+
+    let modifyReason = prompt("Please enter a reason for denying this order");
+    // if (modifyReason === null) return;
+
+    for (const model of currentOrder) {
+      console.log(model, 'model');
+      await databases.updateDocument(
+        "6358796a8d7934bcb3cf",
+        "63587d34102e1c615923",
+        model.$id,
+        { status: 3 }
+      )
+
+      .then(function (response) {
+        console.log(response, 'denyHandler');
+        currentStatus = 3;
+        // call make.com server function here to alert slack, with an attached reason
+      }, function (error) {
+        console.log(error);
+      });
+    }
+    
+    // let tempPromise = databases.updateDocument(
+    //   "6358796a8d7934bcb3cf",
+    //   "63587d34102e1c615923",
+    //   currentOrder[0].$id,
+    //   { status: 3 }
+    //   );
+      
+    //   tempPromise.then(function (response) {
+    //     console.log(response, 'denyHandler');
+    //     currentStatus = 3;
+    //     // then pass in the reason to the make.com server function
+    // }, function (error) {
+    //   console.log(error);
+    // });
+  }
+
 
 </script>
 
@@ -227,6 +356,12 @@
 {#if detailedOrderView}
 <div class="order-container">
   <!-- I should probably use a table? -->
+  {#if currentStatus === 2}
+    <div class="alert">
+      <span>!</span>
+      <div>Awaiting Quote Response</div>
+    </div>
+  {/if}
   <h2>Order Details</h2>
   <h2>{$emailStore}</h2>
   <button class="back-btn" on:click={() => detailedOrderView = false}>Back</button>
@@ -283,14 +418,30 @@
     <p class="address-title">Shipping Address</p>
     <p>{currentAddress}</p>
     <button on:click={cancelHandler}>cancel order</button>
-    <button on:click={fetchPdf}>view PDF</button>
-    <embed bind:this={embedTest}>
-    <!-- svelte-ignore a11y-missing-attribute -->
-    <!-- <object data="https://api.acubed.design/v1/storage/buckets/637295af44c1cf054df6/files/637bfca382bbc684fa1d/download?project=6357477339689685568e" bind:this={hObj} type="application/pdf"></object> -->
     <br>
-    <button class="approve">Approve</button>
-    <button class="deny">Deny</button>
-    <iframe bind:this={ifr} src="" frameborder="0" title='invoice'></iframe>
+    
+    {#if (currentStatus >= 2)}
+      <button class:glowing={currentStatus === 2} id='pdf-button' on:click={fetchPdf}>
+        {#if pdfView}
+          Hide PDF
+        {:else if currentStatus === 2}
+          View Quote to make decision
+        {:else}
+          View PDF/download
+        {/if}
+      </button>
+
+      {#if pdfView}
+        <embed bind:this={embedTest}>
+          {#if currentStatus === 2}
+            <p>Do you approve of this quote? </p>
+            <button on:click={approveHandler} class="approve">Approve</button>
+            <button on:click={denyHandler} class="deny">Deny</button>
+          {/if}
+        <iframe bind:this={ifr} src="" frameborder="0" title='invoice'></iframe>
+      {/if}
+
+    {/if}
 
   </div>
   {:else}
@@ -304,8 +455,12 @@
   
   <!-- this has to be really inefficient -->
   {#await fetchOrderDetails(orderId) then order}
-  <div class="order"   data-id={orderId} class:disabled={disabled === true} > <!-- on:click={handleOrderClick} -->
+  <!-- {console.log(order, 'order')} -->
+  <div class="order" class:pending={order[0].status === 2}  data-id={orderId} class:disabled={disabled === true} > <!-- on:click={handleOrderClick} -->
     <p id="order-title">Order {sliceOrderId(orderId)}</p>
+    <div class="disabled" class:approval={order[0].status === 2}>
+      <p class="inner">Pending your approval</p>
+    </div>
 
       <p class="order-info">Contents: 
         {#each order as quote, i}
@@ -317,12 +472,18 @@
       <p class="order-info">Number of models: {order.length}</p>
       <p class="order-info">Date: {order[0].$createdAt.slice(0, 10)}</p>
       <!-- orderId.slice(-6).toUpperCase(); -->
-      <!-- <p class="status">Status: ..{order[0].status}</p> -->
-      <p class="status">Status: ..{getLowestStatus(order)}</p>
+      <p class="status">Status: {getLowestStatus(order)}</p>
+      <!-- I need to fix this because status is a number -->
       {#if order[0].status === "cancelled"}
         {disabled = true}
       {/if}
-      <button class="order-details-btn" on:click={handleOrderClick} data-id={orderId}>Order Details</button>
+      <button class="order-details-btn" on:click={handleOrderClick} data-id={orderId}>
+        {#if order[0].status === 2}
+          <p data-id={orderId}>Pending Quote (click to view)</p>
+        {:else}
+          <p data-id={orderId}>Order Details</p>
+        {/if}
+      </button>
     </div>
     {/await}
   {/each}
@@ -330,7 +491,7 @@
 {/if}
 
 <style>
-
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
 
 
   .orders-container {
@@ -369,6 +530,7 @@
     margin: 1.1%;
     transition: background-color 0.5s, color 0.7s;
     box-shadow: 0 3px 8px 2px rgba(0, 0, 0, 0.16);
+    position: relative;
   }
 
   .order:hover {
@@ -483,7 +645,7 @@
   }
 
   .disabled {
-    opacity: 0.5;
+    display: none;
   }
 
   iframe {
@@ -507,5 +669,123 @@
 
   .deny {
     background-color: red;
+  }
+
+
+  .pending {
+    border: 5px solid #b61;
+  }
+
+  /* placeholder */
+  .pending {
+    animation: pulse 1.4s infinite;
+  }
+
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(204, 169, 44, 0.7);
+    }
+    80% {
+      box-shadow: 0 0 0 14px rgba(204, 169, 44, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
+    }
+  }
+
+
+  /* this is not good and I should make something simpler later */
+  .approval {
+    position: absolute;
+    height: 120px;
+    width: 120px;
+    text-align: center;
+    top: 0;
+    right: 0;
+    display: block;
+    padding-left: 40px;
+
+    background-color:#b61;
+
+    clip-path: polygon(100% 0, 0 0, 100% 100%);
+    z-index: 4;
+  }
+
+
+  .inner {
+    position: absolute;
+    top: 23px;
+    right: -2px;
+    width: 110px;
+    transform: rotate(37deg);
+    font-family: 'Poppins', sans-serif;
+    z-index: 19;
+  }
+
+  .inner:after {
+    content: '';
+    position: absolute;
+    top: -51px;
+    right: -20px;
+    width: 140%;
+    height: 100%;
+    background-color: #393939
+  }
+
+  #pdf-button {
+    font-size: 21px;
+    font-weight: bold;
+    padding: 6px 9px;
+    margin: 3px;
+    background-color: #2b5;
+    border-radius: 12px;
+    border: none;
+  }
+
+  /* add pulse effect to pdf button */
+
+  .glowing {
+    animation: glowing 1.6s infinite;
+  }
+
+  @keyframes glowing {
+    0% {
+      box-shadow: 0 0 0 0 #2b5b;
+    }
+    89% {
+      box-shadow: 0 0 0 14px rgba(204, 169, 44, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
+    }
+  }
+
+  .alert {
+    background-color: #b61;
+    position: absolute;
+
+    padding: 5px 15px;
+    margin: 4px;
+    border-radius: 6px;
+    width: 250px; 
+    z-index: 4;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+
+  }
+
+  .alert > span {
+    font-weight: bold;
+    font-size: 26px;
+    background-color: red;
+    display: inline-block;
+    width: 29px;
+    height: 29px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
   }
 </style>
