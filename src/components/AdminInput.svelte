@@ -73,6 +73,8 @@
     'post-labor-cost': 10.00,
     'design-labor-cost': 15.00,
 
+    // future proofing
+    tax: 0,
 
   };
 
@@ -223,6 +225,11 @@
     <label for="total">Final Amount</label>
     <p class:alert={parseFloat(modelFinals['final-price']) !== parseFloat(finalAmount)} on:click={handleCalc} class="calc">Computed final: {finalAmount}</p>
     <input bind:this={finalInput} step=".01" type="number" name="final-price" id="final-price" bind:value={modelFinals['final-price']} >
+  </div>
+
+  <div class="input-container">
+    <label for="quantity">Tax</label>
+    <input type="number" name="tax" id="tax" placeholder="%" bind:value={modelFinals.tax}>
   </div>
   
   

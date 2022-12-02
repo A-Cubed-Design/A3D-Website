@@ -169,6 +169,11 @@
     console.log(result.href, 'result.href...');
     ifr.src = result.href;
 
+    // convert the pdf to stream
+    let pdfStream = await fetch(result.href);
+    console.log(pdfStream, 'pdfStream');
+
+
 
 
 
@@ -250,22 +255,40 @@
   
 
 
-  const approveHandler = () =>{
+  const approveHandler = async () =>{
 
-    let tempPromise = databases.updateDocument(
-      "6358796a8d7934bcb3cf",
-      "63587d34102e1c615923",
-      currentOrder[0].$id,
-      { status: 4 }
-    );
+    for (const model of currentOrder) {
+      console.log(model, 'model');
+      await databases.updateDocument(
+        "6358796a8d7934bcb3cf",
+        "63587d34102e1c615923",
+        model.$id,
+        { status: 4 }
+      )
 
-    tempPromise.then(function (response) {
-      console.log(response, 'approveHandler');
-      currentStatus = 4;
-      // call make.com server function here to alert slack, without an attached reason
-    }, function (error) {
-      console.log(error);
-    });
+      .then(function (response) {
+        console.log(response, 'denyHandler');
+        currentStatus = 4;
+        // call make.com server function here to alert slack, without an attached reason
+      }, function (error) {
+        console.log(error);
+      });
+    }
+
+    // let tempPromise = databases.updateDocument(
+    //   "6358796a8d7934bcb3cf",
+    //   "63587d34102e1c615923",
+    //   currentOrder[0].$id,
+    //   { status: 4 }
+    // );
+
+    // tempPromise.then(function (response) {
+    //   console.log(response, 'approveHandler');
+    //   currentStatus = 4;
+    //   // call make.com server function here to alert slack, sometimes with an attached reason
+    // }, function (error) {
+    //   console.log(error);
+    // });
 
 
     // currentOrder.forEach( (quote) => {
@@ -311,7 +334,7 @@
       .then(function (response) {
         console.log(response, 'denyHandler');
         currentStatus = 3;
-        // call make.com server function here to alert slack, with an attached reason
+        // call make.com server function here to alert slack, with an attached reason (sometimes (NONE_GIVEN))
       }, function (error) {
         console.log(error);
       });

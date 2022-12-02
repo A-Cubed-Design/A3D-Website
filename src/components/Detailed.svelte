@@ -280,25 +280,27 @@ const updateQuantityHandler = () => {
     'order-id',
     'order-email',
     'order-address',
+    'tax',
   ],
   ];
 
   // let csvContent = "data:text/csv;charset=utf-8,";
 
   myArr.forEach(obj => {
-    // use statusMap to convert number to string
     let statusString = statusMap.get(obj.status);
     let tempAddress = obj.address.replace(/(\r\n|\n|\r)/gm, " ");
+    console.log(obj, '111');
     let tempRow = [
       obj.title,
       obj.quantity,
-      obj['final-price'],
+      // tofixed(2) rounds to 2 decimal places
+      obj.finalPrice,
       obj.type,
       obj.material,
       statusString,
-      obj.height,
-      obj.width,
-      obj.depth,
+      obj.height + "mm",
+      obj.width + "mm",
+      obj.depth + "mm",
       obj.url,
       obj.description,
       obj.requirements,
@@ -306,6 +308,7 @@ const updateQuantityHandler = () => {
       obj.orderId,
       obj.email,
       tempAddress,
+      0, // tax goes here later, I need to make this reference the 0 from the DB
     ];
     orderRows.push(tempRow);
   })
@@ -320,7 +323,7 @@ const updateQuantityHandler = () => {
   let encodedUri = generateCsv();
 </script>
 
-<a href={encodedUri}>anchor link</a>
+
 
 
 <div class="detailed-view">
@@ -351,7 +354,11 @@ const updateQuantityHandler = () => {
       {/if}
     </div>
     {/each}
-    <button class="send-email" on:click={handleSendEmail}>send invoice email</button>
+    <div class="button-container">
+      <a href={encodedUri}>Download CSV</a>
+      <button class="send-email" on:click={handleSendEmail}>send invoice email</button>
+
+    </div>
     <Pdf currentOrder={myArr} />
     {:else}
     <button class="back" on:click={handleBackModel}>back</button>
@@ -486,13 +493,22 @@ const updateQuantityHandler = () => {
     font-size: 32px;
   }
 
-  .send-email {
+  /* .send-email {
     border-radius: 7px;
     padding: 9px;
     margin: 8px;
     font-size: 1.2em;
     font-weight: bold;
     background-color: #a12;
+  } */
+
+  .button-container > * {
+    border-radius: 8px;
+    padding: 8px;
+    margin: 9px;
+    font-size: 1.2em;
+    font-weight: bold;
+    background-color: #ddd;
   }
 
   .delete {

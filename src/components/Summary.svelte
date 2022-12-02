@@ -34,11 +34,12 @@
 
   const addressValidator = (someStore) => {
     // there has to be a better way to do this
-    const isValid = Object.entries(someStore).every(([key, value]) => {
+    // I can refactor this whole function to be more readable
+    const isValid = Object.entries(someStore).every(([key, value]) => { 
       if (key === 'unit') { // units are optional so return true either way
         return true;
       }
-      if (key === 'autocomplete') { 
+      if (key === 'autocomplete') { // autocomplete always ends up as an empty string after being set
         return true
       }
       if (value === '') { // if any other value is empty, return false
