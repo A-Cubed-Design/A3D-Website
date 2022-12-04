@@ -17,11 +17,22 @@
 
 
   let mobileUser = false;
-  if (navigator.maxTouchPoints > 0) {
-    
-    mobileUser = true;
+  // if (navigator.maxTouchPoints > 0) {
+  //   mobileUser = true;
+  // }
 
+  const detectMobile = () => {
+    if (window.matchMedia('(min-width: 998px)').matches) {
+      console.log(window.innerWidth);
+      mobileUser = false
+    } else {
+      console.log(`Detected small width: ${window.innerWidth}`);
+      mobileUser = true
+    }
   }
+
+  detectMobile();
+  
 
 
 </script>
@@ -33,8 +44,8 @@
 
   {#if $loggedInStore && $emailStore === 'admin@email.com' || $loggedInStore && $emailStore === 'garrett@acubed.design'}
     <Admin />
-  <!-- {:else if mobileUser === 28934}
-    <Mobile/> -->
+  {:else if mobileUser}
+    <Mobile/>
   {:else if $loggedInStore}
     <Nav/>
     <TabBody/>
