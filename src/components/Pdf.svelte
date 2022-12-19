@@ -80,9 +80,8 @@
   const asyncPlaceholder = async () => {
     await getFinalPrice();
     console.log(currentOrder[0].finalPrice, 'ENDENDENDENDEDNNDKLNFDKLSFNF:SKFLJLK')
-    // dd.content[0].table.body.push
-    // console.log(dd.content[12].table.body[0][1].text, 'dd.content[13].table.body');
-    dd.content[12].table.body[0][1].text = tempTotal.toFixed(2);
+    dd.content[12].table.body[0][1].text = '$' + tempTotal.toFixed(2);
+    dd.content[12].table.body[2][1].text = '$' + tempTotal.toFixed(2); // this is bad
     currentOrder.forEach((item) => {
       dynamicTable.push([
         {
@@ -101,14 +100,14 @@
         },
         {
           border: [false, false, false, true],
-          text: `$${item.finalPrice || 'N/A'}`,
+          text: `$${item.finalPrice.toFixed(2) || 'N/A'}`,
           fillColor: '#333',
           alignment: 'right',
           margin: [0, 5, 0, 5],
         },
         {
           border: [false, false, false, true],
-          text: '$' + item.finalPrice * item.quantity,
+          text: `$${(item.finalPrice * item.quantity).toFixed(2) || 'N/A'}`,
           fillColor: '#f9f9f9',
           alignment: 'right',
           margin: [0, 5, 0, 5],
@@ -291,7 +290,7 @@
           alignment: 'left',
         },
         {
-          text: 'Client Name \n Client Company',
+          text: 'Client Name \n Client Company', // "client company"
           bold: true,
           color: '#333333',
           alignment: 'left',
@@ -419,33 +418,9 @@
         },
       },
       table: {
-        headerRows: 1,
+        headerRows: 3,
         widths: ['*', 'auto'],
         body: [
-
-
-
-          [
-            {
-              text: 'Payment Subtotal',
-              border: [false, true, false, true],
-              alignment: 'right',
-              margin: [0, 5, 0, 5],
-            },
-            {
-              border: [false, true, false, true],
-              text: '123',
-              alignment: 'right',
-              fillColor: '#f5f5f5',
-              margin: [0, 5, 0, 5],
-            },
-          ],
-
-
-
-
-
-
 
 
 
@@ -464,18 +439,55 @@
               margin: [0, 5, 0, 5],
             },
           ],
+
+
+
+
+          [
+            {
+              text: 'Tax',
+              border: [false, true, false, true],
+              alignment: 'right',
+              margin: [0, 5, 0, 5],
+            },
+            {
+              border: [false, true, false, true],
+              text: '0.00',
+              alignment: 'right',
+              fillColor: '#f5f5f5',
+              margin: [0, 5, 0, 5],
+            },
+          ],
+
+
+
+
+
+
+          [
+            {
+              text: 'Total Amount',
+              bold: true,
+              fontSize: 20,
+              alignment: 'right',
+              border: [false, false, false, true],
+              margin: [0, 5, 0, 5],
+            },
+            {
+              text: tempTotal,
+              bold: true,
+              fontSize: 20,
+              alignment: 'right',
+              border: [false, false, false, true],
+              fillColor: '#f5f5f5',
+              margin: [0, 5, 0, 5],
+            },
+          ],
         ],
       },
     },
     '\n\n',
-    {
-      text: 'NOTES',
-      style: 'notesTitle',
-    },
-    {
-      text: 'Some notes goes here \n Notes second line',
-      style: 'notesText',
-    },
+    
   ],
   styles: {
     notesTitle: {

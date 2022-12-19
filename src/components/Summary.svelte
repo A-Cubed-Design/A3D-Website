@@ -96,7 +96,7 @@
           requirements: quote.requirements,
           url: quote.url,
           email: email,
-          address: address,
+          address: JSON.stringify(currentAddress),
           status: 0,
         }
       );

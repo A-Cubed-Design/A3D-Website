@@ -356,7 +356,25 @@
     // });
   }
 
+  let addressHolder = '';
+  // let tempString = `{"full-name":"a a","autocomplete":"123 some laned","unit":"","city":"a","state":"CA","zip":"95632","country":"United States","address":"9850 Twin Cities Road"}`
+async function formatAddress(jsonString) {
+  var address = await JSON.parse(currentAddress);
+  var prettyAddress = "";
+  prettyAddress += address["full-name"] + "\n";
+  prettyAddress += address["address"] + "\n";
+  if (address["unit"] !== "") {
+  prettyAddress += address["unit"] + "\n";
+  }
+  prettyAddress += address["city"] + ", " + address["state"] + " " + address["zip"] + "\n";
+  prettyAddress += address["country"];
+  console.log(prettyAddress)
+  addressHolder = prettyAddress;
+  }
 
+  // let promise = formatAddress(currentAddress);
+
+  let promise;
 </script>
 
 <!-- {#each [...statusMap] as [key, value]}
@@ -439,7 +457,13 @@
       </div>
     </div>
     <p class="address-title">Shipping Address</p>
-    <p>{currentAddress}</p>
+
+    
+    {#await formatAddress(currentAddress)}
+      <p>loading...</p>
+    {:then address}
+      <div id='address-holder'>{addressHolder}</div>
+    {/await}
     <button on:click={cancelHandler}>cancel order</button>
     <br>
     
@@ -516,6 +540,9 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
 
+  #address-holder {
+    white-space: pre-line;
+  }
 
   .orders-container {
     display: flex;
