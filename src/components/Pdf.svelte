@@ -89,19 +89,19 @@
           text: item.quantity,
           border: [false, false, false, true],
           alignment: 'center',
+          margin: [0, 5, 0, 0]
         },
-        [
-          {
-            text: item.title,
-            bold: true,
-          },
-          {
-            text: ` Type: ${item.type} Material: ${item.material} H: ${item.height} W: ${item.width} D: ${item.depth}`,
-          },
-        ],
+        {
+          text: [
+								item.title,
+								{ text: '\n', },
+								{ text: (item.type !== 'Laser') ? `${item.type} - Material: ${item.material} - Size: ${item.height}mm x ${item.width}mm x ${item.depth}mm` : `Type: Laser - Material: ${item.material} - Size: ${item.width}mm x ${item.depth}mm`,fontSize: 10 }],
+          border: [false, false, false, true],
+
+        },
         {
           border: [false, false, false, true],
-          text: '$' + item.finalPrice,
+          text: `$${item.finalPrice || 'N/A'}`,
           fillColor: '#333',
           alignment: 'right',
           margin: [0, 5, 0, 5],
@@ -434,52 +434,32 @@
             },
             {
               border: [false, true, false, true],
+              text: '123',
+              alignment: 'right',
+              fillColor: '#f5f5f5',
+              margin: [0, 5, 0, 5],
+            },
+          ],
+
+
+
+
+
+
+
+
+
+          [
+            {
+              text: 'Payment Subtotal',
+              border: [false, true, false, true],
+              alignment: 'right',
+              margin: [0, 5, 0, 5],
+            },
+            {
+              border: [false, true, false, true],
               text: tempTotal,
               alignment: 'right',
-              fillColor: '#f5f5f5',
-              margin: [0, 5, 0, 5],
-            },
-          ],
-
-
-
-
-          [
-            {
-              text: 'Tax',
-              border: [false, true, false, true],
-              alignment: 'right',
-              margin: [0, 5, 0, 5],
-            },
-            {
-              border: [false, true, false, true],
-              text: '$999.99',
-              alignment: 'right',
-              fillColor: '#f5f5f5',
-              margin: [0, 5, 0, 5],
-            },
-          ],
-
-
-
-
-
-
-          [
-            {
-              text: 'Total Amount',
-              bold: true,
-              fontSize: 20,
-              alignment: 'right',
-              border: [false, false, false, true],
-              margin: [0, 5, 0, 5],
-            },
-            {
-              text: '$999.99',
-              bold: true,
-              fontSize: 20,
-              alignment: 'right',
-              border: [false, false, false, true],
               fillColor: '#f5f5f5',
               margin: [0, 5, 0, 5],
             },
