@@ -1,15 +1,25 @@
 <script>
+import {activeView} from '../stores';
+
+function formHandler() {
+  $activeView = 'form';
+}
+
+function mainHandler() {
+  $activeView = 'main';
+}
 
 
 </script>
 
 <header>
-  <img src="./assets/ACubedLogo.png" alt="A Cubed Design Logo">
-  <h1>ACD</h1>
+  <a href="/" on:click={mainHandler}>
+    <img src="/assets/ACubedD-White-Transparent.png" alt="A Cubed Design Logo">
+  </a>
   <div class="links">
-    <a href="#about">About</a>
-    <a href="#team">Team</a>
-    <a href="#contact">Contact</a>
+    <a href="/" on:click={mainHandler}>About</a>
+    <a href="#team" on:click={mainHandler}>Team</a>
+    <a href="#contact" on:click={formHandler}>Contact</a>
   </div>
   <div class="accent-block" aria-hidden="true"></div>
   <div class="accent-block-2" aria-hidden="true"></div>
@@ -37,7 +47,7 @@
   }
 
   img {
-    height: 160%;
+    width: 275px;
     padding: 0 10px;
   }
 
@@ -68,6 +78,27 @@
     margin-left: auto;
     padding: 0 30px;
     z-index: 3;
+  }
+
+  @media (max-width: 950px) {
+    header {
+      flex-direction: column;
+      padding: 1em 0;
+      margin: 0 auto;
+    }
+
+    .links {
+      margin: .25rem;
+    }
+
+    .links a {
+      font-size: 1.25rem;
+    }
+
+    .accent-block,
+    .accent-block-2 {
+      display: none;
+    }
   }
 
   a {

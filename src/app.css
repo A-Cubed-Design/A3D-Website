@@ -19,6 +19,9 @@
   --primary: 115, 0, 153; /* old emerald green: 4, 120, 87, HSL 285 100 30 */
   --my-dark-gray: #181818;
   --my-gray: #292929;
+
+  scroll-behavior: smooth;
+  scroll-padding-top: 5em;
 }
 
 * {
