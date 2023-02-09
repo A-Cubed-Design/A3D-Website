@@ -43,6 +43,8 @@
   iframe {
     margin-top: 1em;
   }
+
+  
   
   @media (max-width: 450px) {
     h1 {
@@ -53,4 +55,15 @@
       font-size: .9em;
     }
   }
+
+  @media (min-width: 900px) {
+    iframe[src*="google.com/forms"] {
+      width: 900px !important;
+    }
+  }
+
+  iframe[src*="google.com/forms"] {
+      margin-top: 40px !important;
+      border-radius: 20px;
+    }
 </style>

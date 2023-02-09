@@ -102,7 +102,7 @@
 
   @media (max-width: 900px) {
     iframe {
-      width: 300px;
+      width: 400px;
     }
 
     .hero-container {
@@ -124,6 +124,12 @@
 
     p {
       font-size: 1.2em;
+    }
+  }
+
+  @media (max-width: 400px) {
+    iframe {
+      width: 300px;
     }
   }
 </style>
