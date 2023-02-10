@@ -3,7 +3,7 @@
   import Typewriter from 'typewriter-effect/dist/core';
   import br from 'braille';
  
-  let braille = '\u2820\u2801\u2800\u2820\u2809\u2825\u2803\u2811\u2819\u2800\u2820\u2819\u2811\u280E\u280A\u281B\u281D'
+  let braille = '\u2820\u2801\u2800\u2820\u2809\u2825\u2803\u282B\u2800\u2820\u2819\u2811\u280E\u280A\u281B\u281D'
   //let braille = br.toBraille('A Cubed Design');
 
   onMount(()=> {
@@ -41,7 +41,7 @@
   <div class="content" >
     <div class="hero-left">
       <h1 id="main-title">A Cubed Design</h1>
-      <p>Tackling the braille literacy crisis by making it easier for blind individuals to acquire screen readers</p>
+      <p>Tackling the braille literacy crisis by making it easier for blind individuals to acquire braille displays</p>
     </div>
     <div class="hero-right">
       <iframe src="https://www.youtube.com/embed/1rPE22she0Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
