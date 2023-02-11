@@ -10,7 +10,7 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap');
   .background {
-      background: url("https://raw.githubusercontent.com/Croixed/acubed-home/main/public/assets/pixabay-royalty-free-printer-2.jpg") no-repeat;
+      background: url("/assets/pixabay-royalty-free-printer-2.jpg") no-repeat;
       background-size: cover;
       background-position: center;
       background-color: rgba(41, 41, 41, .9);

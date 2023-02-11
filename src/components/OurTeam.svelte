@@ -152,13 +152,13 @@
       <div class="cards">
         <div class="card">
           <div class="card-content">
-            <img class="profile-pic" src="/public/assets/abisha-thomas.png" alt="team member name">
+            <img class="profile-pic" src="/assets/abisha-thomas.png" alt="team member name">
             <h3>Abisha Thomas</h3>
           </div>
         </div>
         <div class="card">
           <div class="card-content">
-            <img class="profile-pic" src="/public/assets/giuseppe-cespedes.jpg" alt="team member name">
+            <img class="profile-pic" src="/assets/giuseppe-cespedes.jpg" alt="team member name">
             <h3>Giuseppe Céspedes</h3>
           </div>
         </div>
@@ -169,7 +169,7 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap');
     .background {
-        background: url("https://raw.githubusercontent.com/Croixed/acubed-home/main/public/assets/pixabay-royalty-free-printer-2.jpg") no-repeat;
+        background: url("/assets/pixabay-royalty-free-printer-2.jpg") no-repeat;
         background-size: cover;
         background-position: center;
         background-color: rgba(41, 41, 41, .9);

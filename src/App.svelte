@@ -1,15 +1,8 @@
 <script>
-  import Header from './components/Header.svelte';
-  import Footer from './components/Footer.svelte';
-  import Footer2 from './components/Footer2.svelte';
-  import Hero from './components/Hero.svelte';
-  import ThreeA from './components/ThreeA.svelte';
-  import Enigma from './components/Enigma.svelte';
-  import Team from './components/Team.svelte';
-  import OurTeam from './components/OurTeam.svelte';
-  import Buttons from './components/Buttons.svelte';
-  import Partners from './components/Partners.svelte'
-  import Contact from './components/Contact.svelte';
+  import ContactPage from './pages/ContactPage.svelte';
+  import TeamPage from './pages/TeamPage.svelte';
+  import IndexPage from './pages/IndexPage.svelte';
+
 
   import {activeView} from './stores';
 
@@ -17,26 +10,15 @@
 
 <main>
   {#if $activeView === 'main'}
-  <Header />
-  <Hero />
-  <Enigma />
-  <ThreeA />
-  <Partners />
-  <Team />
-  <Buttons />
-  <Footer2 />
+    <IndexPage />
   {/if}
 
   {#if $activeView === 'form'}
-  <Header />
-  <Contact />
-  <Footer2 />
+    <ContactPage />
   {/if}
 
   {#if $activeView === 'ourTeam'}
-  <Header />
-  <OurTeam />
-  <Footer2 />
+    <TeamPage />
   {/if}
 
 </main>
