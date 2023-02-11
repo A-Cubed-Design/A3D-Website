@@ -9,7 +9,7 @@
     <div class="cards">
       <div class="card">
         <div class="card-content">
-          <img class="profile-pic" src="/assets/Garrett.png" alt="Garrett Carder">
+          <img class="profile-pic" src="/assets/Garrett.png" alt="Professional Headshot of Garrett Carder">
           <h3>Garrett Carder</h3>
           <div class="job-title"><p>CEO & Chief Engineer</p></div>
           <p class="card-body-text">Graduating in 2023 from OSU with a Bachelor's in Computer Science, Garrett leads A Cubed Design's Business Development & Engineering Development</p>
@@ -22,7 +22,7 @@
       </div>
       <div class="card">
         <div class="card-content">
-          <img class="profile-pic" src="/assets/Caroline.png" alt="Caroline Karbowski">
+          <img class="profile-pic" src="/assets/Caroline.png" alt="Professional Headshot of Caroline Karbowski">
           <h3>Caroline Karbowski</h3>
           <div class="job-title"><p>Chief Community Officer</p></div>
           <p class="card-body-text">Graduate in 2022 of OSU with a Bachelor's in Biology, Caroline backs A Cubed Design with a Robust Community and Deep Knowledge of Blindness Accessibility</p>
@@ -35,7 +35,7 @@
       </div>
       <div class="card">
         <div class="card-content">
-          <img class="profile-pic" src="/assets/Enan.png" alt="Enan Srivastava">
+          <img class="profile-pic" src="/assets/Enan.png" alt="Professional Headshot of Enan Srivastava">
           <h3>Enan Srivastava</h3>
           <div class="job-title"><p>Chief Operations Officer</p></div>
           <p class="card-body-text">Graduate in 2022 of OSU with a Bachelor's in Economics, Enan is the driving force behind A Cubed Design's Strategy and Operations.</p>

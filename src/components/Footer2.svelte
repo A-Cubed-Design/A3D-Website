@@ -27,10 +27,19 @@
       </nav> -->
       <div></div>
       <div class="social">
-          <a href="https://www.linkedin.com/company/84838459/"><i class="fab fa-linkedin fa-2x"></i></a>
-          <a href="https://www.facebook.com/A-Cubed-Design-104416965644412"><i class="fab fa-facebook fa-2x"></i></a>
-          <a href="https://www.instagram.com/acubeddesign/"><i class="fab fa-instagram fa-2x"></i></a>
-          <a href="#"><i class="fab fa-twitter fa-2x"></i></a>
+          <a href="https://www.linkedin.com/company/84838459/">
+            <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
+            <span class="sr-only">LinkedIn Page</span>
+          </a>
+          <a href="https://www.facebook.com/A-Cubed-Design-104416965644412">
+            <i class="fab fa-facebook fa-2x" aria-hidden="true"></i>
+            <span class="sr-only">Facebook Page</span>
+          </a>
+          <a href="https://www.instagram.com/acubeddesign/">
+            <i class="fab fa-instagram fa-2x" aria-hidden="true"></i>
+            <span class="sr-only">Instagram Page</span>
+          </a>
+          <!-- <a href="#"><i class="fab fa-twitter fa-2x"></i></a> -->
       </div>
   </div>
   <div class="icon-attributions">Icon Attributions
@@ -44,6 +53,20 @@
 </footer>
 
 <style>
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+
 /* Footer */
 .container {
   max-width: 2000px;

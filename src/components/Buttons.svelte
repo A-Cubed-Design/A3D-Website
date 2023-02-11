@@ -14,6 +14,17 @@
     <a class= "button" href="#ourteam" on:click={formHandler}><p>Our Full Team</p></a>
 </div> -->
 
+<div class="contact-blurb values-bg-color">
+    <h1>Values Assessment</h1>
+    <p>At A Cubed Design, we are always collecting feedback from the blindness community. If you'd like to provide input on our device, choose the appropriate link below, based on whether you are a braille user or an instructor.</p>
+    <!-- <p><a href="#contact" on:click={formHandlerContactForm}><strong>Click here</strong></a> to fill out our contact form</p> -->
+</div>
+
+<div class="team-button-bg values-bg-color">
+    <a class= "team-button values-btn-spacing" href="https://docs.google.com/forms/d/e/1FAIpQLSdt0PoNJQlBr3lVpwvZ9xfZB2toBHDUEY7p2gzTShYFLugh7A/viewform"><p>Braille Users</p></a>
+    <a class= "team-button values-btn-spacing" href="https://docs.google.com/forms/d/e/1FAIpQLSc31W_pOdlMAF_LtNyXoI6qnzhveSxSTjc4TaeOsubNr039nw/viewform"><p>Teachers / AT Instructors</p></a>
+</div>
+
 <div class="contact-blurb">
     <h1>Get Involved</h1>
     <p>Interested in getting involved and learning more?</p>
@@ -34,8 +45,16 @@
     .team-button-bg {
         display: flex;
         justify-content: center;
-        background: #670192cc;
+        background: rgba(41, 41, 41, .8);
         padding-bottom: 4em;
+    }
+
+    .values-bg-color {
+        background: #670192cc !important;
+    }
+
+    .values-btn-spacing {
+        margin: 20px;
     }
 
     .button {
@@ -52,6 +71,9 @@
         border-style: solid;
         border-width: 2px;
         transform: skewX(-17deg);
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .team-button {
@@ -68,6 +90,9 @@
         border-style: solid;
         border-width: 2px;
         transform: skewX(-17deg);
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     p {
@@ -83,7 +108,7 @@
     }
 
     .contact-blurb {
-        background: #670192cc;
+        background: rgba(41, 41, 41, .8);
         padding: 4.5em 0 2.5em 0;
     }
 
@@ -92,6 +117,25 @@
         font-style: none;
         font-size: 1.6em;
         transform: skewX(0deg); 
+    }
+
+    @media (min-width: 960px) {
+        .contact-blurb p {
+            margin-left: auto;
+            margin-right: auto;
+            width: 960px;
+        }
+    }
+
+    @media (max-width: 500px) {
+        .team-button-bg {
+            flex-direction: column;
+        }
+
+        .team-button-bg a {
+            margin-left: auto;
+            margin-right: auto;
+        }
     }
 
     @media (max-width: 360px) {

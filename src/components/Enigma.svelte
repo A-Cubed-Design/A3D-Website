@@ -1,5 +1,5 @@
 <div class="enigma">
-  <img class="enigma-img" src="./assets/enigma-lighter.png" alt="enigma reader">
+  <img class="enigma-img" src="./assets/enigma-lighter.png" alt="3D model of braille display device">
   <div class="enigma-text">
     <p class="title">Enigma Reader</p>
     <div class="sub-text">The enigma braille reader is our signature device, which aims to be affordable and provide an expandable ecosystem for people who are blind to be able to plug and play new functionality into their braille device.</div>
