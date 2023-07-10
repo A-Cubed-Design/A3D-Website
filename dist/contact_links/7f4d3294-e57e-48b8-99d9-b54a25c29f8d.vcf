@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+PRODID:-//Apple Inc.//iPhone OS 16.5.1//EN
+N:Lewis;Trey;;;
+FN:Trey Lewis
+ORG:Rehabilitation of the Blind Specialist at OkDRS;
+EMAIL;type=INTERNET;type=HOME;type=pref:trey.lewis@okdrs.gov
+TEL;type=pref:+14056599323
+TEL;type=WORK;type=VOICE:(405) 522-3417
+END:VCARD
