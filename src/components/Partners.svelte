@@ -18,7 +18,7 @@
       <img class="logo-image" src="/assets/innovation-studio-logo.svg" alt="innovation studio logo">
     </div>
     <div class="logo-item">
-      <img class="logo-image" src="/assets/school-for-the-blind-logo.png" alt="ohio state school for the blind logo">
+      <img class="logo-image logo-color" src="/assets/school-for-the-blind-logo.png" alt="ohio state school for the blind logo">
     </div>
     <div class="logo-item">
       <img class="logo-image logo-color" src="/assets/nsf-logo.png" alt="National Science Foundation logo">
