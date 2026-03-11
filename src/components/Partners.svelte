@@ -1,90 +1,100 @@
-<div class="container bg-braille">
-    <h2 class="md text-center my-2 shadow">
-        Our Partners
-    </h2>
-    <div class="container flex">
-        <div>
-            <img class="logo-image" src="/assets/osu-logo.png" alt="osu keenen center for entrepreneurship logo">
-        </div>
-        <div>
-            <img class="logo-image" src="/assets/gen-usa-logo.svg" alt="generation usa logo">
-        </div>
-        <div>
-            <img class="logo-image" src="/assets/see3d-logo.png" alt="see3d logo">
-        </div>
-        <div>
-            <img class="logo-image" src="/assets/innovation-studio-logo.svg" alt="innovation studio logo">
-        </div>
-        <div>
-            <img src="/assets/school-for-the-blind-logo.png" alt="ohio state school for the blind logo">
-        </div>
+<script>
+  import { reveal } from "../lib/animations.js";
+</script>
+
+<section class="partners-section" use:reveal={{ stagger: 80, staggerSelector: '.logo-item' }}>
+  <h2 class="section-title">Our Partners</h2>
+  <div class="logos">
+    <div class="logo-item">
+      <img class="logo-image" src="/assets/osu-logo.png" alt="osu keenen center for entrepreneurship logo">
     </div>
-</div>
+    <div class="logo-item">
+      <img class="logo-image" src="/assets/gen-usa-logo.svg" alt="generation usa logo">
+    </div>
+    <div class="logo-item">
+      <img class="logo-image" src="/assets/see3d-logo.png" alt="see3d logo">
+    </div>
+    <div class="logo-item">
+      <img class="logo-image" src="/assets/innovation-studio-logo.svg" alt="innovation studio logo">
+    </div>
+    <div class="logo-item">
+      <img class="logo-image" src="/assets/school-for-the-blind-logo.png" alt="ohio state school for the blind logo">
+    </div>
+    <div class="logo-item">
+      <img class="logo-image logo-color" src="/assets/nsf-logo.png" alt="National Science Foundation logo">
+    </div>
+    <div class="logo-item">
+      <img class="logo-image logo-color" src="/assets/sea-change-logo.png" alt="AAAS SEA Change logo">
+    </div>
+  </div>
+</section>
 
 <style>
-.container {
-    /* background-color: #292929; */
-    margin: 0 auto;
-    padding: 75px 0;
-    width: 100%;
-    
-}
+  .partners-section {
+    padding: var(--section-gap) 0;
+    background: var(--color-surface-1);
+    border-top: 1px solid var(--color-border-subtle);
+  }
 
-.bg-braille {
-    background-image: url('/assets/unsplash-royalty-free-braille.jpg');
-    box-shadow: inset 0 0 0 1000vw rgba(174, 51, 219, 0.35);
-    background-position: 0 10%;
-    background-size: cover;
-    border-top: 3px solid rgba(84, 31, 103, .90);
-    border-bottom: 3px solid rgba(84, 31, 103, .90);
-}
+  .section-title {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    text-align: center;
+    margin-bottom: var(--space-2xl);
+  }
 
-.flex {
+  .logos {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
-}
+    flex-wrap: wrap;
+    gap: var(--space-2xl);
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+  }
 
-.text-center {
+  .logo-item {
+    display: flex;
     align-items: center;
-}
+    justify-content: center;
+  }
 
-.md {
-    font-size: 3.5em;
-}
+  .logo-image {
+    width: 150px;
+    filter: brightness(0) invert(1);
+    opacity: 0.5;
+    transition:
+      opacity var(--duration-normal) var(--ease-out-cubic),
+      filter var(--duration-normal) var(--ease-out-cubic);
+  }
 
-.my-2 {
-    margin: 1.5rem auto;
-    line-height: 1em;
-}
+  .logo-image:hover {
+    opacity: 1;
+    filter: none;
+  }
 
-.shadow {
-    text-shadow: 1px 4px #292929;
-}
+  .logo-color {
+    filter: grayscale(1) brightness(0.8);
+    opacity: 0.6;
+  }
 
-.logo-image {
-    width: 230px;
-}
+  .logo-color:hover {
+    filter: none;
+    opacity: 1;
+  }
 
-@media (max-width: 870px) {
-    .text-center {
-        font-size: 2em;
+  @media (max-width: 768px) {
+    .section-title {
+      font-size: var(--font-size-2xl);
     }
-}
 
-@media (max-width: 1200px) {
-    .container {
-      flex-wrap: wrap;
-      justify-content: center;
+    .logos {
+      gap: var(--space-xl);
     }
 
     .logo-image {
-        margin: 1.5em 0;
-    }
-
-    .text-center {
-        max-width: 400px;
+      width: 120px;
     }
   }
 </style>

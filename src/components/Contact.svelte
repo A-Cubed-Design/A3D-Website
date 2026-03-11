@@ -1,69 +1,65 @@
-<div class="background"></div>
+<script>
+  import {config} from '../lib/config.js';
+  import { reveal } from "../lib/animations.js";
+</script>
 
-<div class="contact" id="contact">
+<section class="contact" id="contact" use:reveal>
+  <span class="eyebrow">Reach Out</span>
   <h1>Get Involved</h1>
   <p>Want to get involved? Want to provide feedback?</p>
   <p>Fill out the form below to get in contact with us.</p>
-  <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfynGDAGn5yMX5LjyVCN98s9Cmx1M3hItnamqN4jmdYEgdavA/viewform?embedded=true" width="100%" height="600" frameborder="0" marginheight="0" marginwidth="0" class="ui-droppable" title="Google Form">Loading…</iframe>
-</div>
+  <iframe src={config.forms.contact} width="100%" height="600" frameborder="0" marginheight="0" marginwidth="0" class="ui-droppable" title="A Cubed Design contact form">Loading...</iframe>
+</section>
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap');
-  .background {
-      background: url("/assets/pixabay-royalty-free-printer-2.jpg") no-repeat;
-      background-size: cover;
-      background-position: center;
-      background-color: rgba(41, 41, 41, .9);
-
-      background-blend-mode: darken;
-      height: 100%;
-      width: 100vw;
-      z-index: -1;
-
-      position: fixed;
-      transform: scaleX(-1); /* flips image */
-  }
   .contact {
-    padding: 175px 0 80px;
+    padding: calc(var(--header-height) + var(--space-2xl)) var(--space-lg) var(--section-gap);
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+  }
+
+  .eyebrow {
+    display: inline-block;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-caps);
+    color: var(--color-primary-light);
+    margin-bottom: var(--space-sm);
   }
 
   h1 {
-    font-size: 3.5em;
-    line-height: 1em;
-    padding: 0 auto;
-    margin-bottom: .3em;
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    margin-bottom: var(--space-sm);
   }
 
   p {
-    font-size: 1.5em;
-    line-height: 2em;
-    padding: 0 auto;
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
   }
 
   iframe {
-    margin-top: 1em;
+    margin-top: var(--space-xl);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--color-border-subtle);
   }
 
-  
-  
-  @media (max-width: 450px) {
+  @media (max-width: 480px) {
     h1 {
-      font-size: 2em;
+      font-size: var(--font-size-2xl);
     }
 
     p {
-      font-size: .9em;
+      font-size: var(--font-size-base);
     }
   }
 
-  @media (min-width: 900px) {
-    iframe[src*="google.com/forms"] {
-      width: 900px !important;
+  @media (min-width: 1024px) {
+    iframe {
+      width: 900px;
     }
   }
-
-  iframe[src*="google.com/forms"] {
-      margin-top: 40px !important;
-      border-radius: 20px;
-    }
 </style>

@@ -1,146 +1,151 @@
 <script>
     import {activeView} from '../stores';
-    
+    import {config} from '../lib/config.js';
+    import { reveal } from "../lib/animations.js";
+
     function formHandler() {
       $activeView = 'ourTeam';
     }
 
-    function formHandlerContactForm() {
+    function formHandlerContactForm(e) {
+        e.preventDefault();
         $activeView = 'form';
     }
 </script>
 
-<!-- <div class="button-bg">
-    <a class= "button" href="#ourteam" on:click={formHandler}><p>Our Full Team</p></a>
-</div> -->
-
-<div class="contact-blurb values-bg-color">
-    <h1>Values Assessment</h1>
+<section class="values-section" use:reveal>
+  <div class="section-inner">
+    <h2>Values Assessment</h2>
     <p>At A Cubed Design, we are always collecting feedback from the blindness community. If you'd like to provide input on our device, choose the appropriate link below, based on whether you are a braille user or an instructor.</p>
-    <!-- <p><a href="#contact" on:click={formHandlerContactForm}><strong>Click here</strong></a> to fill out our contact form</p> -->
-</div>
+    <div class="button-row">
+      <a class="btn btn-outline" href={config.forms.brailleUsers}>Braille Users</a>
+      <a class="btn btn-outline" href={config.forms.teachers}>Teachers / AT Instructors</a>
+    </div>
+  </div>
+</section>
 
-<div class="team-button-bg values-bg-color">
-    <a class= "team-button values-btn-spacing" href="https://docs.google.com/forms/d/e/1FAIpQLSdt0PoNJQlBr3lVpwvZ9xfZB2toBHDUEY7p2gzTShYFLugh7A/viewform"><p>Braille Users</p></a>
-    <a class= "team-button values-btn-spacing" href="https://docs.google.com/forms/d/e/1FAIpQLSc31W_pOdlMAF_LtNyXoI6qnzhveSxSTjc4TaeOsubNr039nw/viewform"><p>Teachers / AT Instructors</p></a>
-</div>
-
-<div class="contact-blurb">
-    <h1>Get Involved</h1>
+<section class="cta-section" use:reveal>
+  <div class="section-inner">
+    <h2>Get Involved</h2>
     <p>Interested in getting involved and learning more?</p>
-    <!-- <p><a href="#contact" on:click={formHandlerContactForm}><strong>Click here</strong></a> to fill out our contact form</p> -->
-</div>
-
-<div class="team-button-bg">
-    <a class= "team-button" href="#contact" on:click={formHandlerContactForm}><p>Contact Us</p></a>
-</div>
+    <div class="button-row">
+      <a class="btn btn-primary" href="/" on:click={formHandlerContactForm}>Contact Us</a>
+    </div>
+  </div>
+</section>
 
 <style>
-    .button-bg {
-        display: flex;
-        justify-content: center;
-        background-color: rgba(41, 41, 41, .8);
-    }
+  .values-section {
+    padding: var(--section-gap) 0;
+    background:
+      linear-gradient(135deg, hsla(272, 72%, 30%, 0.15) 0%, transparent 60%);
+    border-top: 1px solid var(--color-border-purple);
+    border-bottom: 1px solid var(--color-border-purple);
+  }
 
-    .team-button-bg {
-        display: flex;
-        justify-content: center;
-        background: rgba(41, 41, 41, .8);
-        padding-bottom: 4em;
-    }
+  .cta-section {
+    padding: var(--section-gap) 0;
+    background: var(--color-surface-1);
+  }
 
-    .values-bg-color {
-        background: #670192cc !important;
-    }
+  .section-inner {
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    text-align: center;
+    padding: 0 var(--space-lg);
+  }
 
-    .values-btn-spacing {
-        margin: 20px;
-    }
+  h2 {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--space-md);
+  }
 
-    .button {
-        font-size: 2em;
-        background: linear-gradient(108deg, #670192cc 23%, #56037c 73%, #480368cc 96%);
-        padding: 10px;
-        width: 280px;
-        margin-bottom: 4em;
-        text-align: center;
-        border-radius: 5px;
-        color:#E8E5DA ;
-        font-weight: bold;
-        line-height: 25px;
-        border-style: solid;
-        border-width: 2px;
-        transform: skewX(-17deg);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+  p {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+    max-width: 700px;
+    margin: 0 auto var(--space-xl);
+  }
 
-    .team-button {
-        font-size: 2em;
-        background: rgba(41, 41, 41, .8);
-        padding: 10px;
-        width: 280px;
-        margin-bottom: .8em;
-        text-align: center;
-        border-radius: 5px;
-        color:#E8E5DA ;
-        font-weight: bold;
-        line-height: 25px;
-        border-style: solid;
-        border-width: 2px;
-        transform: skewX(-17deg);
-        display: flex;
-        justify-content: center;
-        align-items: center;
+  .button-row {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-lg);
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    padding: 14px 32px;
+    border-radius: var(--border-radius-md);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 200px;
+    position: relative;
+    overflow: hidden;
+    transition:
+      transform var(--duration-fast) var(--ease-out-expo),
+      box-shadow var(--duration-normal) var(--ease-out-cubic),
+      border-color var(--duration-normal) var(--ease-out-cubic),
+      background var(--duration-normal) var(--ease-out-cubic);
+  }
+
+  .btn:active {
+    transform: scale(0.98);
+  }
+
+  .btn-outline {
+    color: var(--color-accent);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--color-border-default);
+  }
+
+  .btn-outline:hover {
+    transform: translateY(-1px);
+    border-color: var(--color-primary-light);
+    box-shadow: var(--shadow-glow-sm);
+    color: var(--color-text-primary);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .btn-primary {
+    color: #fff;
+    background: var(--color-primary);
+    border: 1px solid var(--color-primary-light);
+    box-shadow: var(--shadow-glow-sm);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-glow-md);
+    color: #fff;
+    background: var(--color-primary-light);
+  }
+
+  @media (max-width: 480px) {
+    h2 {
+      font-size: var(--font-size-2xl);
     }
 
     p {
-        transform: skewX(17deg); 
+      font-size: var(--font-size-base);
     }
 
-    .button:hover {
-        background: hsla(0, 0%, 53%, .6)
+    .btn {
+      min-width: 0;
+      width: 100%;
     }
 
-    .team-button:hover {
-        background: hsla(0, 0%, 53%, .6);
+    .button-row {
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-sm);
     }
-
-    .contact-blurb {
-        background: rgba(41, 41, 41, .8);
-        padding: 4.5em 0 2.5em 0;
-    }
-
-    .contact-blurb p {
-        padding-top: .5em;
-        font-style: none;
-        font-size: 1.6em;
-        transform: skewX(0deg); 
-    }
-
-    @media (min-width: 960px) {
-        .contact-blurb p {
-            margin-left: auto;
-            margin-right: auto;
-            width: 960px;
-        }
-    }
-
-    @media (max-width: 500px) {
-        .team-button-bg {
-            flex-direction: column;
-        }
-
-        .team-button-bg a {
-            margin-left: auto;
-            margin-right: auto;
-        }
-    }
-
-    @media (max-width: 360px) {
-        .contact-blurb p {
-            font-size: 1.2em;
-        }
-    }
+  }
 </style>
